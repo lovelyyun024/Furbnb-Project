@@ -7,6 +7,9 @@ const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const { ValidationError } = require("sequelize");
 
+
+// const { Spot } = require("./db/models");
+
 const routes = require("./routes");
 
 const { environment } = require("./config");
@@ -44,6 +47,13 @@ app.use(
 );
 
 app.use(routes); 
+
+// app.get("/api/spots", async (req, res, next) => {
+//     const spots = await Spot.findAll({
+//       order: [["id"]],
+//     });
+//     return res.json(spots);
+// });
 
 // Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {
