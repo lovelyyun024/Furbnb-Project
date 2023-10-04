@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === "production") {
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      "Users",
+      "Reviews",
       {
         id: {
           allowNull: false,
@@ -16,27 +16,20 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        firstName: {
-          type: Sequelize.STRING(256),
+        spotId: {
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
-        lastName: {
-          type: Sequelize.STRING(256),
+        userId: {
+          type: Sequelize.INTEGER,
           allowNull: false,
         },
-        username: {
-          type: Sequelize.STRING(30),
+        review: {
+          type: Sequelize.STRING,
           allowNull: false,
-          unique: true,
         },
-        email: {
-          type: Sequelize.STRING(256),
-          allowNull: false,
-          unique: true,
-        },
-        hashedPassword: {
-          type: Sequelize.STRING.BINARY,
-          allowNull: false,
+        stars: {
+          type: Sequelize.INTEGER,
         },
         createdAt: {
           allowNull: false,
@@ -52,9 +45,8 @@ module.exports = {
       options
     );
   },
-
   async down(queryInterface, Sequelize) {
-    options.tableName = "Users";
-    return queryInterface.dropTable(options);
-  },
+     options.tableName = "Reviews";
+     return queryInterface.dropTable(options);
+  }
 };
