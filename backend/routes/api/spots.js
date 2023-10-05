@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
-const { Spot, Review, SpotImage } = require("../../db/models");
+const { User, Spot, Review, SpotImage } = require("../../db/models");
 
 const router = express.Router();
 
@@ -11,6 +11,39 @@ const { handleValidationErrors } = require("../../utils/validation");
 const validators = require("../../utils/routevalidator");
 
 const Sequelize = require("sequelize");
+
+//Get details for a Spot from an id
+router.get("/:spotId", validators.checkExist, async (req, res, next) => {
+  const targetSpot = await Spot.findByPk(req.params.spotId, {
+    include: [
+      { association: "SpotImages", attributes: ["id", "url", "preview"] },
+      {
+        model: User,
+        attributes: ["id", "firstName", "lastName"],
+        as: "Owner"
+      },
+    ],
+  });
+
+  const spotDetail = targetSpot.toJSON();
+
+  const total = await Review.sum("stars", {
+    where: {
+      spotId: req.params.spotId,
+    },
+  });
+
+  const num = await Review.count({
+    where: {
+      spotId: req.params.spotId,
+    },
+  });
+
+  spotDetail.avgRating = total / num;
+  spotDetail.numReviews = num;
+
+  return res.json(spotDetail);
+});
 
 //get all spots
 router.get("/", async (req, res, next) => {
@@ -77,7 +110,10 @@ router.get("/", async (req, res, next) => {
 
 // create a new spot
 router.post(
-  "/",requireAuth, validators.validateSpotCreate, async (req, res, next) => {
+  "/",
+  requireAuth,
+  validators.validateSpotCreate,
+  async (req, res, next) => {
     const {
       address,
       city,
@@ -115,8 +151,10 @@ router.post(
 //edit a spot
 router.put(
   "/:spotId",
-  requireAuth,validators.checkExist,
-  validators.checkOwner,validators.validateSpotCreate,
+  requireAuth,
+  validators.checkExist,
+  validators.checkOwner,
+  validators.validateSpotCreate,
   async (req, res, next) => {
     let targetSpot = await Spot.findByPk(req.params.spotId);
     const {
@@ -153,9 +191,9 @@ router.put(
 router.get("/current", requireAuth, async (req, res, next) => {
   // console.log(req.user.id);
   let allspots = await Spot.findAll({
-    where:{
-      ownerId:req.user.id
-    }
+    where: {
+      ownerId: req.user.id,
+    },
   });
 
   const spotsJSON = allspots.map((spot) => spot.toJSON());
@@ -190,28 +228,36 @@ router.get("/current", requireAuth, async (req, res, next) => {
 });
 
 //delete a spot
-router.delete("/:spotId", requireAuth, validators.checkExist,
-  validators.checkOwner, async (req, res, next) => {
-  const deleteSpot = await Spot.findByPk(req.params.spotId);
-  await deleteSpot.destroy();
-  res.json({ message: "Successfully deleted" });
+router.delete(
+  "/:spotId",
+  requireAuth,
+  validators.checkExist,
+  validators.checkOwner,
+  async (req, res, next) => {
+    const deleteSpot = await Spot.findByPk(req.params.spotId);
+    await deleteSpot.destroy();
+    res.json({ message: "Successfully deleted" });
   }
 );
 
 // Add an Image to a Spot based on the Spot's id
-router.post("/:spotId/images", requireAuth, validators.checkExist,
-  validators.checkOwner, async (req, res, next) => {
+router.post(
+  "/:spotId/images",
+  requireAuth,
+  validators.checkExist,
+  validators.checkOwner,
+  async (req, res, next) => {
     const { url, preview } = req.body;
 
     const newImage = SpotImage.build({
-     spotId: req.params.spotId,
-     url,
-     preview
+      spotId: req.params.spotId,
+      url,
+      preview,
     });
 
     await newImage.save();
 
-    res.json({id:newImage.id,url:newImage.url,preview:newImage.preview});
+    res.json({ id: newImage.id, url: newImage.url, preview: newImage.preview });
   }
 );
 
