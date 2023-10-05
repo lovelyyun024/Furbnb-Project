@@ -8,24 +8,11 @@ const router = express.Router();
 
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
+const validators = require("../../utils/routevalidator");
 
-const validateSpotCreate = [
-  // check("email")
-  //   .exists({ checkFalsy: true })
-  //   .isEmail()
-  //   .withMessage("Please provide a valid email."),
-  check("name")
-    .exists({ checkFalsy: true })
-    .isLength({ max: 49 })
-    .withMessage("Name must be less than 50 characters"),
-  // check("username").not().isEmail().withMessage("Username cannot be an email."),
-  // check("password")
-  //   .exists({ checkFalsy: true })
-  //   .isLength({ min: 6 })
-  //   .withMessage("Password must be 6 characters or more."),
-  handleValidationErrors,
-];
+const Sequelize = require("sequelize");
 
+//get all spots
 router.get("/", async (req, res, next) => {
   let allspots = await Spot.findAll({});
   // console.log(typeof allspots)
@@ -89,34 +76,84 @@ router.get("/", async (req, res, next) => {
 });
 
 // create a new spot
-router.post("/", requireAuth, validateSpotCreate, async (req, res, next) => {
-  const { address, city, state, country, lat, lng, name, description, price } =
-    req.body;
+router.post(
+  "/",requireAuth, validators.validateSpotCreate, async (req, res, next) => {
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
 
-  console.log(req.user);
-  const owner = req.user.id;
+    console.log(req.user);
+    const owner = req.user.id;
 
-  const newSpot = Spot.build({
-    ownerId: owner,
-    address,
-    city,
-    state,
-    country,
-    lat,
-    lng,
-    name,
-    description,
-    price,
-  });
-  // try {
-  //   newSpot.validate();
-  // } catch (err) {
-  //   console.log(err);
-  // }
+    const newSpot = Spot.build({
+      ownerId: owner,
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    });
 
-  await newSpot.save();
+    await newSpot.save();
 
-  res.status(201).json(newSpot);
-});
+    res.status(201).json(newSpot);
+  }
+);
+
+//edit a spot
+router.put(
+  "/:spotId",
+  requireAuth,
+  validators.checkOwner,validators.validateSpotCreate,
+  async (req, res, next) => {
+    let targetSpot = await Spot.findByPk(req.params.spotId);
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
+
+   
+
+    // if(targetSpot.ownerId === req.user.id){
+    targetSpot.set({
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+      updatedAt: Sequelize.literal("CURRENT_TIMESTAMP"),
+    });
+
+    await targetSpot.save();
+    res.json(targetSpot);
+
+    // } else{
+    //   res.json({ message: "You don't have athroization to edit this spot" });
+    // }
+  }
+);
 
 module.exports = router;

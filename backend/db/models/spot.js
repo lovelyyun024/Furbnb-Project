@@ -73,7 +73,12 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      name: DataTypes.STRING(50),
+      name: {
+        type: DataTypes.STRING(50),
+        validate: {
+          len: [5, 50],
+        },
+      },
       description: { type: DataTypes.STRING, allowNull: false },
       price: { type: DataTypes.FLOAT, allowNull: false },
     },
