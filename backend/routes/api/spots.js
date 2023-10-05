@@ -189,5 +189,30 @@ router.get("/current", requireAuth, async (req, res, next) => {
   return res.json({ spots: spotsJSON });
 });
 
+//delete a spot
+router.delete("/:spotId", requireAuth, validators.checkExist,
+  validators.checkOwner, async (req, res, next) => {
+  const deleteSpot = await Spot.findByPk(req.params.spotId);
+  await deleteSpot.destroy();
+  res.json({ message: "Successfully deleted" });
+  }
+);
+
+// Add an Image to a Spot based on the Spot's id
+router.post("/:spotId/images", requireAuth, validators.checkExist,
+  validators.checkOwner, async (req, res, next) => {
+    const { url, preview } = req.body;
+
+    const newImage = SpotImage.build({
+     spotId: req.params.spotId,
+     url,
+     preview
+    });
+
+    await newImage.save();
+
+    res.json({id:newImage.id,url:newImage.url,preview:newImage.preview});
+  }
+);
 
 module.exports = router;
