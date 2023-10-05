@@ -2,6 +2,7 @@ const { handleValidationErrors } = require("./validation");
 const { check } = require("express-validator");
 
 const { Spot, Review, SpotImage } = require("../db/models");
+const { param } = require("../routes/api/spots");
 
 const validators = {
   validateSpotCreate: [
@@ -34,6 +35,16 @@ const validators = {
     handleValidationErrors,
   ],
 
+  validateReviewCreate: [
+    check("review")
+      .exists({ checkFalsy: true })
+      .withMessage("Review text is required"),
+    check("stars")
+      .exists({ checkFalsy: true })
+      .withMessage("Stars must be an integer from 1 to 5"),
+    handleValidationErrors,
+  ],
+
   checkExist: async (req, res, next) => {
     //check if spotId is included in request
     if (req.params.spotId) {
@@ -55,6 +66,22 @@ const validators = {
       }
     }
 
+    //check if reviewId is included in request
+    if (req.params.reviewId) {
+      const review = await Review.findOne({
+        where:{
+          id:req.params.reviewId
+        }
+      });
+      console.log("result"+req.params.reviewId)
+      // console.log("reeee"+review)
+
+      //check if review is exsiting.
+      if (!review) {
+        res.status(404).json({ message: "Review couldn't be found" });
+      }
+    }
+
     next();
   },
 
@@ -64,32 +91,42 @@ const validators = {
       const spot = await Spot.findByPk(req.params.spotId);
 
       //check owner authorization.
-      if (spot) {
-        if (req.user.id !== spot.ownerId) {
-          const err = new Error("You are not authorized.");
-          err.status = 403;
-          return next(err);
-        }
-        delete spot;
+      if (req.user.id !== spot.ownerId) {
+        const err = new Error("You are not authorized.");
+        err.status = 403;
+        return next(err);
       }
+      delete spot;
     }
 
     //check if imageId is included in request
     if (req.params.imageId) {
       const image = await SpotImage.findByPk(req.params.imageId);
-      // console.log("result"+image.spotId)
 
       //check owner authorization.
-      const ownedspots = await Spot.findByPk(image.spotId);
-
-      // console.log("result" + ownedspots.ownerId);
-
       if (ownedspots.ownerId !== req.user.id) {
         const err = new Error("You are not authorized.");
         err.status = 403;
         return next(err);
       }
       delete image;
+    }
+
+    //check if reviewId is included in request
+    if (req.params.reviewId) {
+       const review = await Review.findOne({
+        where:{
+          id:req.params.reviewId
+        }})
+      // console.log("result"+image.spotId)
+
+      //check owner authorization.
+      if (req.user.id !== review.userId) {
+        const err = new Error("You are not authorized.");
+        err.status = 403;
+        return next(err);
+      }
+      delete review;
     }
 
     next();

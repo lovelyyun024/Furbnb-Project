@@ -14,6 +14,14 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
         hooks: true,
       });
+
+      Review.belongsTo(models.User, {
+        foreignKey: "userId",
+      });
+
+      Review.belongsTo(models.Spot, {
+        foreignKey: "spotId",
+      });
     }
   }
   Review.init(
@@ -23,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       review: { type: DataTypes.STRING, allowNull: false },
       stars: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         validate: {
           isIn: {
             args: [[1, 2, 3, 4, 5]],

@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
-const { User, Spot, Review, SpotImage } = require("../../db/models");
+const { User, Spot, Review, SpotImage, ReviewImage } = require("../../db/models");
 
 const router = express.Router();
 
@@ -106,6 +106,31 @@ router.get("/", async (req, res, next) => {
   //   console.log("json: " + allspots[0].toJSON())
 
   return res.json({ spots: spotsJSON });
+});
+
+//Get all Reviews by a Spot's id
+router.get("/:spotId/reviews", validators.checkExist, async (req, res, next) => {
+  const targetReview = await Review.findAll( {
+    where:{
+      spotId:req.params.spotId
+    },
+    include: [
+      {
+        model: User,
+        attributes: ["id", "firstName", "lastName"],
+      },
+      {
+        model: ReviewImage,
+        attributes: ["id", "url"],
+      },
+    ],
+  });
+
+  // const spotDetail = targetSpot.toJSON();
+
+  // if (Object.keys(targetReview).length == 0) {
+    return res.json({ Reviews: targetReview });
+  // } else res.json({ message: "No reviews yet." });
 });
 
 // create a new spot
