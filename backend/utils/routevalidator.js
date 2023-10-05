@@ -4,14 +4,7 @@ const { check } = require("express-validator");
 const { Spot, Review, SpotImage } = require("../db/models");
 
 const validators = {
-  validateSpotCreate:
-    //  [
-    //   check("name")
-    //     .isLength({ max: 49 })
-    //     .withMessage("Name must be less than 50 characters"),
-    //   handleValidationErrors,
-    // ],
-    [
+  validateSpotCreate:[
       check("address")
         .exists({ checkFalsy: true })
         .withMessage("Street address is required"),
@@ -43,13 +36,22 @@ const validators = {
       handleValidationErrors,
     ],
 
+  checkExist: async (req, res, next) => {
+    //check if spotId is included in request
+    if (req.params.spotId) {
+      const spot = await Spot.findByPk(req.params.spotId);
+
+      //check if spot is exsiting.
+      if (!spot) {
+        res.status(404).json({ message: "Spot couldn't be found" });
+      } 
+    } next()
+  },
+
   checkOwner: async (req, res, next) => {
     const spot = await Spot.findByPk(req.params.spotId);
 
-    if (!spot) {
-      res.status(404).json({ message: "Spot couldn't be found" });
-    }
-
+    //check owner authorization.
     if (spot) {
       if (req.user.id !== spot.ownerId) {
         const err = new Error("You are not authorized.");
