@@ -20,6 +20,8 @@ module.exports = {
           country: "United States",
           name: "SOHO 93",
           description: "zip 11211",
+          lat: 37.7645358,
+          lng: -122.4730327,
           price: 120,
         },
         {
@@ -30,6 +32,8 @@ module.exports = {
           country: "United States",
           name: "SOHO 380",
           description: "zip 02903",
+          lat: 47.7645358,
+          lng: -112.4730327,
           price: 99.5,
         },
         {
@@ -40,6 +44,8 @@ module.exports = {
           country: "United States",
           name: "SOHO 177",
           description: "zip 03561",
+          lat: 57.7645358,
+          lng: -102.4730327,
           price: 95,
         },
         {
@@ -50,6 +56,8 @@ module.exports = {
           country: "United States",
           name: "SOHO 202",
           description: "zip 04401",
+          lat: 67.7645358,
+          lng: -92.4730327,
           price: 80.9,
         },
         {
@@ -60,6 +68,8 @@ module.exports = {
           country: "United States",
           name: "SOHO 46",
           description: "zip 04901",
+          lat: 77.7645358,
+          lng: -82.4730327,
           price: 150,
         },
         {
@@ -70,6 +80,8 @@ module.exports = {
           country: "United States",
           name: "SOHO 22",
           description: "zip 07601",
+          lat: 87.7645358,
+          lng: -72.4730327,
           price: 150,
         },
         {
@@ -80,6 +92,8 @@ module.exports = {
           country: "United States",
           name: "SOHO 75",
           description: "zip 11772",
+          lat: -87.7645358,
+          lng: 72.4730327,
           price: 200.8,
         },
       ],

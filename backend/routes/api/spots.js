@@ -9,6 +9,7 @@ const router = express.Router();
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const validators = require("../../utils/routevalidator");
+const { queryCheck } = require("../../utils/query");
 
 const Sequelize = require("sequelize");
 const { Op } = require("sequelize");
@@ -47,8 +48,12 @@ router.get("/spots/:spotId", validators.checkExist, async (req, res, next) => {
 });
 
 //get all spots
-router.get("/", async (req, res, next) => {
-  let allspots = await Spot.findAll({});
+router.get("/", queryCheck, async (req, res, next) => {
+  const { where, pagination } = req;
+  let allspots = await Spot.findAll({
+    where,
+    ...pagination
+  });
   // console.log(typeof allspots)
 
   //   const firstTweet = await Tweet.findOne({
@@ -106,7 +111,11 @@ router.get("/", async (req, res, next) => {
   //   console.log("aaa" + allspots[0].avgRating)
   //   console.log("json: " + allspots[0].toJSON())
 
-  return res.json({ spots: spotsJSON });
+  return res.json({
+    spots: spotsJSON,
+    page: parseInt(req.query.page),
+    size: parseInt(req.query.size),
+  });
 });
 
 //Get all Reviews by a Spot's id
