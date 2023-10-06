@@ -20,12 +20,12 @@ router.put(
   validators.checkOwner,
   validators.validateReviewCreate,
   async (req, res, next) => {
-    // let targetRev = await Review.findByPk(req.params.reviewId);
-    const targetRev = await Review.findOne({
-      where: {
-        id: req.params.reviewId,
-      },
-    });
+    const targetRev = await Review.findByPk(req.params.reviewId);
+    // const targetRev = await Review.findOne({
+    //   where: {
+    //     id: req.params.reviewId,
+    //   },
+    // });
     const { review, stars } = req.body;
 
     targetRev.set({

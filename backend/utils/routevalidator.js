@@ -76,11 +76,7 @@ const validators = {
 
     //check if reviewId is included in request
     if (req.params.reviewId) {
-      const review = await Review.findOne({
-        where:{
-          id:req.params.reviewId
-        }
-      });
+      const review = await Review.findByPk(req.params.reviewId);
       // console.log("result"+req.params.reviewId)
       // console.log("reeee"+review)
 
@@ -139,10 +135,7 @@ const validators = {
 
     //check if reviewId is included in request
     if (req.params.reviewId) {
-       const review = await Review.findOne({
-        where:{
-          id:req.params.reviewId
-        }})
+        const review = await Review.findByPk(req.params.reviewId);
       // console.log("result"+image.spotId)
 
       //check owner authorization.
