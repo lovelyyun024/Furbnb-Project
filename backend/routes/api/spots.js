@@ -151,7 +151,7 @@ router.post(
       price,
     } = req.body;
 
-    console.log(req.user);
+    // console.log(req.user);
     const owner = req.user.id;
 
     const newSpot = Spot.build({
@@ -284,6 +284,37 @@ router.post(
 
     res.json({ id: newImage.id, url: newImage.url, preview: newImage.preview });
   }
+);
+
+//Create a Review for a Spot based on the Spot's id
+router.post("/:spotId/reviews", requireAuth, validators.checkExist, validators.validateReviewCreate,
+  async (req, res, next) => {
+    const {review, stars} = req.body;
+    const userID = req.user.id;
+
+    const existReview = await Review.findOne({
+      where: {
+        userId: userID,
+        spotId: req.params.spotId,
+      },
+    });
+
+    console.log(existReview)
+    if(!existReview){
+    const newReview = Review.build({
+      spotId: req.params.spotId,
+      userId: userID,
+      review,
+      stars
+    });
+
+    await newReview.save();
+    res.status(201).json(newReview)
+  } else {
+      res.status(500).json({message: "User already has a review for this spot"})
+      }
+    }
+    
 );
 
 module.exports = router;
