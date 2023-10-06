@@ -88,4 +88,13 @@ router.get("/current", requireAuth, async (req, res, next) => {
     res.json({ Reviews: reviews });
 });
 
+//delete a review
+router.delete("/:reviewId",requireAuth, validators.checkExist, validators.checkOwner,
+  async (req, res, next) => {
+    const deleteReview = await Review.findByPk(req.params.reviewId);
+    await deleteReview.destroy();
+    res.json({ message: "Successfully deleted" });
+  }
+);
+
 module.exports = router;
