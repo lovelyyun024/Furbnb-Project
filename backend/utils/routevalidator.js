@@ -1,7 +1,7 @@
 const { handleValidationErrors } = require("./validation");
 const { check } = require("express-validator");
 
-const { Spot, Review, SpotImage, ReviewImage } = require("../db/models");
+const { Spot, Review, SpotImage, ReviewImage, Booking } = require("../db/models");
 const { param } = require("../routes/api/spots");
 
 const validators = {
@@ -97,6 +97,7 @@ const validators = {
       //check owner authorization.
       if (req.user.id !== spot.ownerId) {
         const err = new Error("You are not authorized.");
+        err.errors = { message: "Forbidden" };
         err.status = 403;
         return next(err);
       }
@@ -113,6 +114,7 @@ const validators = {
         spot = await Spot.findByPk(image.spotId)
         if(spot.ownerId !==req.user.id){
            const err = new Error("You are not authorized.");
+           err.errors = { message: "Forbidden" };
            err.status = 403;
            return next(err);
         }
@@ -123,6 +125,7 @@ const validators = {
         review = await Review.findByPk(image.reviewId);
         if (review.userId !== req.user.id) {
           const err = new Error("You are not authorized.");
+          err.errors = { message: "Forbidden" };
           err.status = 403;
           return next(err);
         }
