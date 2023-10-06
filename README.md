@@ -17,7 +17,6 @@
 <!-- `<insert database schema design here>` -->
 ![db-schema]
 
-[db-schema]: ./images/airbnb_dbdiagram.png
 <!--!!END_ADD -->
 
 ## API Documentation

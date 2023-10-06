@@ -7,24 +7,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Spot, {
         foreignKey: "ownerId",
+        as: "Owner",
         onDelete: "CASCADE",
         hooks: true,
       });
 
-      User.belongsToMany(
-        models.Spot,{
-          through: models.Booking,
-          foreignKey: "userId",
-          otherKey: "spotId",
-        }
-        // additional attributes for the join table can be included in the options
-      );
+       User.hasMany(models.Review, {
+         foreignKey: "userId",
+       });
 
-      User.belongsToMany(models.Spot, {
-        through: models.Review,
-        foreignKey: "userId",
-        otherKey: "spotId",
-      });
+       User.hasMany(models.Booking, {
+         foreignKey: "userId",
+       });
+
     }
   }
 

@@ -7,6 +7,9 @@ const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const { ValidationError } = require("sequelize");
 
+
+// const { Spot } = require("./db/models");
+
 const routes = require("./routes");
 
 const { environment } = require("./config");
@@ -45,6 +48,13 @@ app.use(
 
 app.use(routes); 
 
+// app.get("/api/spots", async (req, res, next) => {
+//     const spots = await Spot.findAll({
+//       order: [["id"]],
+//     });
+//     return res.json(spots);
+// });
+
 // Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {
   const err = new Error("The requested resource couldn't be found.");
@@ -62,7 +72,8 @@ app.use((err, _req, _res, next) => {
     for (let error of err.errors) {
       errors[error.path] = error.message;
     }
-    err.title = 'Validation error';
+    // _res.status(400)
+    // err.title = 'Validation error';
     err.errors = errors;
   }
   next(err);
@@ -70,13 +81,13 @@ app.use((err, _req, _res, next) => {
 
 // Error formatter
 app.use((err, _req, res, _next) => {
-  res.status(err.status || 500);
+  res.status(err.status || 400);
   console.error(err);
   res.json({
-    title: err.title || 'Server Error',
+    // title: err.title || 'Server Error',
     message: err.message,
     errors: err.errors,
-    stack: isProduction ? null : err.stack
+    // stack: isProduction ? null : err.stack
   });
 });
 
