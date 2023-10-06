@@ -88,5 +88,19 @@ router.put("/:bookingId", requireAuth, validators.checkExist, validators.checkOw
   }}
 );
 
+//Delete a Booking
+router.delete("/:bookingId",requireAuth, validators.checkExist, validators.checkOwner,
+  async (req, res, next) => {
+    const deleteBooking = await Booking.findByPk(req.params.bookingId);
+    if (new Date() < new Date(deleteBooking.startDate)){
+      await deleteBooking.destroy();
+    res.json({ message: "Successfully deleted" });
+  }  {
+      res.status(403).json({
+      message: "Bookings that have been started can't be deleted",
+      });
+  }
+});
+
 
 module.exports = router;
