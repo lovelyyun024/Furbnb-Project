@@ -97,4 +97,29 @@ router.delete("/:reviewId",requireAuth, validators.checkExist, validators.checkO
   }
 );
 
+//Add an Image to a Review based on the Review's id
+router.post("/:reviewId/images",requireAuth, validators.checkExist, validators.checkOwner,
+  async (req, res, next) => {
+    const { url } = req.body;
+    const ImgNum = await ReviewImage.count({
+      where: {
+        reviewId: req.params.reviewId
+      }
+    });
+   
+    if(ImgNum < 10){
+    const newImage = ReviewImage.build({
+      reviewId: req.params.reviewId,
+      url,
+    });
+
+    await newImage.save();
+
+    res.json({ id: newImage.id, url: newImage.url })
+   } res.status(403).json({
+     message: "Maximum number of images for this resource was reached",
+   });
+  }
+);
+
 module.exports = router;
