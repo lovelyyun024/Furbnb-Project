@@ -1,7 +1,7 @@
 const { handleValidationErrors } = require("./validation");
 const { check } = require("express-validator");
 
-const { Spot, Review, SpotImage } = require("../db/models");
+const { Spot, Review, SpotImage, ReviewImage } = require("../db/models");
 const { param } = require("../routes/api/spots");
 
 const validators = {
@@ -58,13 +58,21 @@ const validators = {
 
     //check if imageId is included in request
     if (req.params.imageId) {
-      const image = await SpotImage.findByPk(req.params.imageId);
+      let image;
 
-      //check if image is exsiting.
-      if (!image) {
-        res.status(404).json({ message: "Spot Image couldn't be found" });
+      if(req.originalUrl.split("/")[2]==="spot-images"){
+        image = await SpotImage.findByPk(req.params.imageId);
+    //check if image is exsiting.
+        if (!image) {
+          res.status(404).json({ message: "Spot Image couldn't be found" });
+        }}
+
+      if(req.originalUrl.split("/")[2]==="review-images"){
+        image = await ReviewImage.findByPk(req.params.imageId);
+        if (!image) {
+          res.status(404).json({ message: "Review Image couldn't be found" });
       }
-    }
+    }}
 
     //check if reviewId is included in request
     if (req.params.reviewId) {
@@ -73,7 +81,7 @@ const validators = {
           id:req.params.reviewId
         }
       });
-      console.log("result"+req.params.reviewId)
+      // console.log("result"+req.params.reviewId)
       // console.log("reeee"+review)
 
       //check if review is exsiting.
@@ -101,15 +109,32 @@ const validators = {
 
     //check if imageId is included in request
     if (req.params.imageId) {
-      const image = await SpotImage.findByPk(req.params.imageId);
+      let image;
+      let spot;
+      let review;
+      if (req.originalUrl.split("/")[2] === "spot-images"){
+        image = await SpotImage.findByPk(req.params.imageId);
+        spot = await Spot.findByPk(image.spotId)
+        if(spot.ownerId !==req.user.id){
+           const err = new Error("You are not authorized.");
+           err.status = 403;
+           return next(err);
+        }
+       }
 
-      //check owner authorization.
-      if (ownedspots.ownerId !== req.user.id) {
-        const err = new Error("You are not authorized.");
-        err.status = 403;
-        return next(err);
+      if (req.originalUrl.split("/")[2] === "review-images") {
+        image = await ReviewImage.findByPk(req.params.imageId);
+        review = await Review.findByPk(image.reviewId);
+        if (review.userId !== req.user.id) {
+          const err = new Error("You are not authorized.");
+          err.status = 403;
+          return next(err);
+        }
       }
+        
       delete image;
+      delete spot;
+      delete review;
     }
 
     //check if reviewId is included in request
@@ -130,6 +155,8 @@ const validators = {
     }
 
     next();
-  },
-};
+  }}
+
+
+
 module.exports = validators;
