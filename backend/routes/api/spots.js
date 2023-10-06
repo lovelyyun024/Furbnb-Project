@@ -14,7 +14,7 @@ const Sequelize = require("sequelize");
 const { Op } = require("sequelize");
 
 //Get details for a Spot from an id
-router.get("/:spotId", validators.checkExist, async (req, res, next) => {
+router.get("/spots/:spotId", validators.checkExist, async (req, res, next) => {
   const targetSpot = await Spot.findByPk(req.params.spotId, {
     include: [
       { association: "SpotImages", attributes: ["id", "url", "preview"] },
@@ -351,7 +351,34 @@ router.post("/:spotId/bookings", requireAuth, validators.checkExist, validators.
       });
     }
   }
-    
 );
+
+//Get all Bookings for a Spot based on the Spot's id
+router.get("/:spotId/bookings", requireAuth, validators.checkExist, async (req, res, next) => {
+  const spot = await Spot.findByPk(req.params.spotId)
+  let booking;
+  if(spot.ownerId === req.user.id){
+      booking = await Booking.findAll({
+      where: {
+        spotId: req.params.spotId,
+      },
+      include: [
+        {
+          model: User,
+          attributes: ["id", "firstName", "lastName"],
+        },
+      ],
+    });
+    return res.json({ Bookings: booking })
+  }{
+     booking = await Booking.findAll({
+       where: {
+         spotId: req.params.spotId,
+       },
+       attributes: ["spotId", "startDate", "endDate"],
+     });
+    return res.json({ Bookings: booking });
+  };
+});
 
 module.exports = router;
