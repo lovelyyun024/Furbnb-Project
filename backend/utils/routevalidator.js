@@ -95,6 +95,16 @@ const validators = {
       }
     }
 
+    //check if bookingId is included in request
+    if (req.params.bookingId) {
+      const booking = await Booking.findByPk(req.params.bookingId);
+
+      //check if booking is exsiting.
+      if (!booking) {
+        res.status(404).json({ message: "Booking couldn't be found" });
+      }
+    }
+
     next();
   },
 
@@ -159,6 +169,18 @@ const validators = {
       delete review;
     }
 
+    //check if bookingId is included in request
+    if (req.params.bookingId) {
+      const booking = await Booking.findByPk(req.params.bookingId);
+
+      //check owner authorization.
+      if (req.user.id !== booking.userId) {
+        const err = new Error("You are not authorized.");
+        err.status = 403;
+        return next(err);
+      }
+      delete booking;
+    }
     next();
   },
   
