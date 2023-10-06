@@ -45,6 +45,13 @@ const validators = {
     handleValidationErrors,
   ],
 
+  validateBookingCreate: [
+    check("endDate")
+      .exists({ checkFalsy: true })
+      .withMessage("Stars must be an integer from 1 to 5"),
+    handleValidationErrors,
+  ],
+
   checkExist: async (req, res, next) => {
     //check if spotId is included in request
     if (req.params.spotId) {
@@ -60,19 +67,21 @@ const validators = {
     if (req.params.imageId) {
       let image;
 
-      if(req.originalUrl.split("/")[2]==="spot-images"){
+      if (req.originalUrl.split("/")[2] === "spot-images") {
         image = await SpotImage.findByPk(req.params.imageId);
-    //check if image is exsiting.
+        //check if image is exsiting.
         if (!image) {
           res.status(404).json({ message: "Spot Image couldn't be found" });
-        }}
+        }
+      }
 
-      if(req.originalUrl.split("/")[2]==="review-images"){
+      if (req.originalUrl.split("/")[2] === "review-images") {
         image = await ReviewImage.findByPk(req.params.imageId);
         if (!image) {
           res.status(404).json({ message: "Review Image couldn't be found" });
+        }
       }
-    }}
+    }
 
     //check if reviewId is included in request
     if (req.params.reviewId) {
@@ -109,16 +118,16 @@ const validators = {
       let image;
       let spot;
       let review;
-      if (req.originalUrl.split("/")[2] === "spot-images"){
+      if (req.originalUrl.split("/")[2] === "spot-images") {
         image = await SpotImage.findByPk(req.params.imageId);
-        spot = await Spot.findByPk(image.spotId)
-        if(spot.ownerId !==req.user.id){
-           const err = new Error("You are not authorized.");
-           err.errors = { message: "Forbidden" };
-           err.status = 403;
-           return next(err);
+        spot = await Spot.findByPk(image.spotId);
+        if (spot.ownerId !== req.user.id) {
+          const err = new Error("You are not authorized.");
+          err.errors = { message: "Forbidden" };
+          err.status = 403;
+          return next(err);
         }
-       }
+      }
 
       if (req.originalUrl.split("/")[2] === "review-images") {
         image = await ReviewImage.findByPk(req.params.imageId);
@@ -130,7 +139,7 @@ const validators = {
           return next(err);
         }
       }
-        
+
       delete image;
       delete spot;
       delete review;
@@ -138,7 +147,7 @@ const validators = {
 
     //check if reviewId is included in request
     if (req.params.reviewId) {
-        const review = await Review.findByPk(req.params.reviewId);
+      const review = await Review.findByPk(req.params.reviewId);
       // console.log("result"+image.spotId)
 
       //check owner authorization.
@@ -151,7 +160,27 @@ const validators = {
     }
 
     next();
-  }}
+  },
+  
+  // check if the spot is owned by the user
+  checkSpotOwner: async (req, res, next) => {
+    //check if spotId is included in request
+    if (req.params.spotId) {
+      const spot = await Spot.findByPk(req.params.spotId);
+
+      //check owner authorization.
+      if (req.user.id === spot.ownerId) {
+        const err = new Error("You are not authorized.");
+        err.errors = { message: "Forbidden" };
+        err.status = 403;
+        return next(err);
+      }
+      delete spot;
+    }
+
+    next();
+  },
+};
 
 
 

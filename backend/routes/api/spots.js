@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
-const { User, Spot, Review, SpotImage, ReviewImage } = require("../../db/models");
+const { User, Spot, Review, SpotImage, ReviewImage, Booking } = require("../../db/models");
 
 const router = express.Router();
 
@@ -11,6 +11,7 @@ const { handleValidationErrors } = require("../../utils/validation");
 const validators = require("../../utils/routevalidator");
 
 const Sequelize = require("sequelize");
+const { Op } = require("sequelize");
 
 //Get details for a Spot from an id
 router.get("/:spotId", validators.checkExist, async (req, res, next) => {
@@ -314,6 +315,42 @@ router.post("/:spotId/reviews", requireAuth, validators.checkExist, validators.v
       res.status(500).json({message: "User already has a review for this spot"})
       }
     }
+    
+);
+
+//Create a Booking from a Spot based on the Spot's id
+router.post("/:spotId/bookings", requireAuth, validators.checkExist, validators.checkSpotOwner, validators.validateBookingCreate,
+  async (req, res, next) => {
+    const { startDate, endDate } = req.body;
+    const userID = req.user.id;
+   
+    const existBooking = await Booking.findOne({
+      where: {
+        [Op.or]: [{startDate: {[Op.startsWith]: startDate}}, {endDate: {[Op.startsWith]: endDate}} ],
+        spotId: req.params.spotId,
+      },
+    });
+
+    if (!existBooking) {
+      const newBooking = Booking.build({
+        spotId: req.params.spotId,
+        userId: userID,
+        startDate,
+        endDate,
+      });
+
+      await newBooking.save();
+      res.status(200).json(newBooking);
+    } else {
+      res.status(403).json({
+        message: "Sorry, this spot is already booked for the specified dates",
+        errors: {
+          startDate: "Start date conflicts with an existing booking",
+          endDate: "End date conflicts with an existing booking"
+        },
+      });
+    }
+  }
     
 );
 
