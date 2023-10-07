@@ -72,9 +72,10 @@ app.use((err, _req, _res, next) => {
     for (let error of err.errors) {
       errors[error.path] = error.message;
     }
-    // _res.status(400)
-    // err.title = 'Validation error';
+    // _res.status(500)
+    err.title = 'Validation error';
     err.errors = errors;
+    err.status= 500
   }
   next(err);
 });
@@ -83,12 +84,18 @@ app.use((err, _req, _res, next) => {
 app.use((err, _req, res, _next) => {
   res.status(err.status || 400);
   console.error(err);
-  res.json({
+  if(!err.title){res.json({
     // title: err.title || 'Server Error',
     message: err.message,
     errors: err.errors,
     // stack: isProduction ? null : err.stack
-  });
+  });}
+   res.json({
+     title: err.title || "Server Error",
+     message: err.message,
+     errors: err.errors,
+     // stack: isProduction ? null : err.stack
+   });
 });
 
 module.exports = app;
