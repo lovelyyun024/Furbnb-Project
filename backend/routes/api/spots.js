@@ -15,7 +15,7 @@ const Sequelize = require("sequelize");
 const { Op } = require("sequelize");
 
 //Get details for a Spot from an id
-router.get("/spots/:spotId", validators.checkExist, async (req, res, next) => {
+router.get("/:spotId", validators.checkExist, async (req, res, next) => {
   const targetSpot = await Spot.findByPk(req.params.spotId, {
     include: [
       { association: "SpotImages", attributes: ["id", "url", "preview"] },
@@ -41,8 +41,13 @@ router.get("/spots/:spotId", validators.checkExist, async (req, res, next) => {
     },
   });
 
-  spotDetail.avgRating = total / num;
+  const avg = total / num
+
   spotDetail.numReviews = num;
+
+   if (total !== null) {
+     spotDetail.avgRating = avg;
+   } else spotDetail.avgRating = "No ratings yet";
 
   return res.json(spotDetail);
 });
@@ -53,31 +58,35 @@ router.get("/", queryCheck, async (req, res, next) => {
   let allspots = await Spot.findAll({
     where,
     ...pagination,
-    // attributes: [Sequelize.literal('"SpotImage"."preview"'), "preview"],
-    //  [sequelize.literal('laughReactionsCount'), 'DESC']
     attributes: {
-      include: [
-        [
-          Sequelize.literal(`(
-                    SELECT url 
-                    FROM SpotImages
-                    WHERE
-                        SpotImages.preview = true
-                        AND
-                        SpotImages.spotId = Spot.id
-                )`),
-          "previewImage",
-        ],
-      ],
+    include: [
+      [
+        Sequelize.literal(`(
+                  SELECT url
+                  FROM SpotImages
+                  WHERE
+                      SpotImages.preview = true
+                      AND
+                      SpotImages.spotId = Spot.id
+              )`),
+        "previewImage",
+      ]
+    ],
     },
+
+    // include: [{ model: SpotImage, attributes: ["url"] }],
+
+    // attributes: {
+    //   include: [
+    //     [Sequelize.fn("sum", Sequelize.col("spot.price")), "minPrice"],
+        
+    //   ],
+    // },
   });
 
-  const spotsJSON = allspots.map((spot) => spot.toJSON());
+  allspots = allspots.map((spot) => spot.toJSON());
 
-  // console.log("res  " + allspots);
-  // console.log("res  "+ spotsJSON)
-
-  for (let spot of spotsJSON) {
+  for (let spot of allspots) {
     const total = await Review.sum("stars", {
       where: {
         spotId: spot.id,
@@ -100,39 +109,10 @@ router.get("/", queryCheck, async (req, res, next) => {
     if(spot.previewImage === null){
       spot.previewImage = "No preview images yet"
     }
-
-
-    // const img = await SpotImage.findAll({
-    //   where: {
-    //     preview: true,
-    //     spotId: spot.id,
-    //   },
-    //   attributes: ["url"],
-    // });
-
-    // spot.previewImage = img;
   }
-  //     const previewImg = await SpotImage.findOne({
-  //       where: {
-  //         spotId: spot.id,
-  //         preview: true
-  //       },
-  //       attributes: ['url']
-  //     });
-
-  //     if (previewImg) {
-  //       const imgObj = previewImg.toJSON()
-  //       spot.previewImage = imgObj.url
-  //     }
-  //   }
-
-  // console.log("result"+spot.avgRating)
-
-  //   console.log("aaa" + allspots[0].avgRating)
-  //   console.log("json: " + allspots[0].toJSON())
 
   return res.json({
-    spots: spotsJSON,
+    Spots: allspots,
     page: parseInt(req.page),
     size: parseInt(req.size),
   });
@@ -244,16 +224,30 @@ router.put(
 
 //Get all Spots owned by the Current User
 router.get("/current", requireAuth, async (req, res, next) => {
-  // console.log(req.user.id);
   let allspots = await Spot.findAll({
     where: {
       ownerId: req.user.id,
     },
+    attributes: {
+      include: [
+        [
+          Sequelize.literal(`(
+                  SELECT url
+                  FROM SpotImages
+                  WHERE
+                      SpotImages.preview = true
+                      AND
+                      SpotImages.spotId = Spot.id
+              )`),
+          "previewImage",
+        ],
+      ],
+    },
   });
 
-  const spotsJSON = allspots.map((spot) => spot.toJSON());
+  allspots = allspots.map((spot) => spot.toJSON());
 
-  for (let spot of spotsJSON) {
+  for (let spot of allspots) {
     const total = await Review.sum("stars", {
       where: {
         spotId: spot.id,
@@ -266,20 +260,20 @@ router.get("/current", requireAuth, async (req, res, next) => {
       },
     });
 
-    spot.avgRating = total / num;
+    const avg = total / num;
 
-    const img = await SpotImage.findAll({
-      where: {
-        preview: true,
-        spotId: spot.id,
-      },
-      attributes: ["url"],
-    });
+     if (num !== 0) {
+       spot.avgRating = avg;
+     } else {
+       spot.avgRating = "No ratings yet";
+     }
 
-    spot.previewImage = img;
+     if (spot.previewImage === null) {
+       spot.previewImage = "No preview images yet";
+     }
   }
 
-  return res.json({ spots: spotsJSON });
+  return res.json({ Spots: allspots });
 });
 
 //delete a spot

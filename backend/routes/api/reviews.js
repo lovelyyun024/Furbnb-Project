@@ -52,40 +52,31 @@ router.get("/current", requireAuth, async (req, res, next) => {
       },
       {
         model: Spot,
-        attributes: { exclude: ['createdAt', 'updatedAt']},
-        // include:[{
-        //      model:SpotImage,
-        //      attributes:["url"],
-        // }]
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "description"],
+          include: [
+            [
+              Sequelize.literal(`(
+                  SELECT url
+                  FROM SpotImages
+                  WHERE
+                      SpotImages.preview = true
+                      AND
+                      SpotImages.spotId = Spot.id
+              )`),
+              "previewImage",
+            ],
+          ],
+        },
       },
       {
         model: ReviewImage,
-        attributes: ["id", "url"],
+        attributes: ["id", "url"]
       },
     ],
   });
 
-  // const spotDetail = targetSpot.toJSON();
-
-  // if (Object.keys(targetReview).length == 0) {
-//   res.json({ Reviews: targetReview });
-  // } else res.json({ message: "No reviews yet." });
-
-    const reviews = [];
-
-    for (const review of targetReview) {
-      const reviewObj = review.toJSON();
-      const spotImage = await SpotImage.findOne({
-        where: {
-          spotId: reviewObj.Spot.id,
-          preview: true,
-        },
-      });
-
-      if (spotImage) reviewObj.Spot.previewImage = spotImage.url;
-        reviews.push(reviewObj);
-    }
-    res.json({ Reviews: reviews });
+    res.json({ Reviews: targetReview });
 });
 
 //delete a review

@@ -18,9 +18,11 @@ const validators = {
       .withMessage("Country is required"),
     check("lat")
       .exists({ checkNull: true })
+      .isFloat({ min: -90, max: 90 })
       .withMessage("Latitude is not valid"),
     check("lng")
       .exists({ checkNull: true })
+      .isFloat({ min: -180, max: 180 })
       .withMessage("Longitude is not valid"),
     check("name")
       .exists({ checkFalsy: true })
@@ -31,7 +33,8 @@ const validators = {
       .withMessage("Description is required"),
     check("price")
       .exists({ checkFalsy: true })
-      .withMessage("Price per day is required"),
+      .isFloat({ min: 0 })
+      .withMessage("Price per day is required and must be greater than 0"),
     handleValidationErrors,
   ],
 
@@ -41,6 +44,7 @@ const validators = {
       .withMessage("Review text is required"),
     check("stars")
       .exists({ checkFalsy: true })
+      .isInt({ gt: 0, lt: 6 })
       .withMessage("Stars must be an integer from 1 to 5"),
     handleValidationErrors,
   ],
@@ -115,8 +119,7 @@ const validators = {
 
       //check owner authorization.
       if (req.user.id !== spot.ownerId) {
-        const err = new Error("You are not authorized.");
-        err.errors = { message: "Forbidden" };
+        const err = new Error("Forbidden");
         err.status = 403;
         return next(err);
       }
@@ -132,8 +135,7 @@ const validators = {
         image = await SpotImage.findByPk(req.params.imageId);
         spot = await Spot.findByPk(image.spotId);
         if (spot.ownerId !== req.user.id) {
-          const err = new Error("You are not authorized.");
-          err.errors = { message: "Forbidden" };
+          const err = new Error("Forbidden");
           err.status = 403;
           return next(err);
         }
@@ -143,8 +145,7 @@ const validators = {
         image = await ReviewImage.findByPk(req.params.imageId);
         review = await Review.findByPk(image.reviewId);
         if (review.userId !== req.user.id) {
-          const err = new Error("You are not authorized.");
-          err.errors = { message: "Forbidden" };
+          const err = new Error("Forbidden");
           err.status = 403;
           return next(err);
         }
@@ -162,7 +163,7 @@ const validators = {
 
       //check owner authorization.
       if (req.user.id !== review.userId) {
-        const err = new Error("You are not authorized.");
+        const err = new Error("Forbidden");
         err.status = 403;
         return next(err);
       }
@@ -175,7 +176,7 @@ const validators = {
 
       //check owner authorization.
       if (req.user.id !== booking.userId) {
-        const err = new Error("You are not authorized.");
+        const err = new Error("Forbidden");
         err.status = 403;
         return next(err);
       }
@@ -183,7 +184,7 @@ const validators = {
     }
     next();
   },
-  
+
   // check if the spot is owned by the user
   checkSpotOwner: async (req, res, next) => {
     //check if spotId is included in request
@@ -192,8 +193,7 @@ const validators = {
 
       //check owner authorization.
       if (req.user.id === spot.ownerId) {
-        const err = new Error("You are not authorized.");
-        err.errors = { message: "Forbidden" };
+        const err = new Error("Forbidden");
         err.status = 403;
         return next(err);
       }
