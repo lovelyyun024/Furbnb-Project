@@ -332,12 +332,15 @@ router.post("/:spotId/bookings", requireAuth, validators.checkExist, validators.
   async (req, res, next) => {
     const { startDate, endDate } = req.body;
     const userID = req.user.id;
+
+      startDate = new Date(startDate).toISOString().slice(0, 10);
+      endDate = new Date(endDate).toISOString().slice(0, 10);
    
     const existBooking = await Booking.findOne({
       where: {
         [Op.or]: [
-          { startDate: { [Op.startsWith]: startDate.toString() } },
-          { endDate: { [Op.startsWith]: endDate.toString() } },
+          { startDate: startDate },
+          { endDate:  endDate},
         ],
         spotId: req.params.spotId,
       },
