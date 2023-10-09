@@ -342,14 +342,32 @@ router.post("/:spotId/reviews", requireAuth, validators.checkExist, validators.v
 );
 
 //Create a Booking from a Spot based on the Spot's id
-router.post("/:spotId/bookings", requireAuth, validators.checkExist, validators.checkSpotOwner, validators.validateBookingCreate,
+router.post(
+  "/:spotId/bookings",
+  requireAuth,
+  validators.checkExist,
+  validators.checkSpotOwner,
+  validators.validateBookingCreate,
   async (req, res, next) => {
-    const { startDate, endDate } = req.body;
+    let { startDate, endDate } = req.body;
     const userID = req.user.id;
-   
+
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+
     const existBooking = await Booking.findOne({
       where: {
-        [Op.or]: [{startDate: {[Op.startsWith]: startDate}}, {endDate: {[Op.startsWith]: endDate}} ],
+        [Op.or]: [
+          { startDate: { [Op.between]: [startDate, endDate] } },
+          { endDate: { [Op.between]: [startDate, endDate] } },
+          {
+            [Op.and]: [
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: endDate } },
+            ],
+          },
+        ],
+
         spotId: req.params.spotId,
       },
     });
@@ -369,12 +387,13 @@ router.post("/:spotId/bookings", requireAuth, validators.checkExist, validators.
         message: "Sorry, this spot is already booked for the specified dates",
         errors: {
           startDate: "Start date conflicts with an existing booking",
-          endDate: "End date conflicts with an existing booking"
+          endDate: "End date conflicts with an existing booking",
         },
       });
     }
   }
 );
+
 
 //Get all Bookings for a Spot based on the Spot's id
 router.get("/:spotId/bookings", requireAuth, validators.checkExist, async (req, res, next) => {

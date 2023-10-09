@@ -1,7 +1,13 @@
 const { handleValidationErrors } = require("./validation");
 const { check } = require("express-validator");
 
-const { Spot, Review, SpotImage, ReviewImage, Booking } = require("../db/models");
+const {
+  Spot,
+  Review,
+  SpotImage,
+  ReviewImage,
+  Booking,
+} = require("../db/models");
 const { param } = require("../routes/api/spots");
 
 const validators = {
@@ -50,9 +56,15 @@ const validators = {
   ],
 
   validateBookingCreate: [
+    check("startDate")
+      .exists({ checkFalsy: true })
+      .withMessage("startDate is required"),
     check("endDate")
       .exists({ checkFalsy: true })
-      .withMessage("Stars must be an integer from 1 to 5"),
+      .withMessage("endDate is required"),
+    // .custom((val, { req }) => {
+    //   if (true) throw new Error("endDate cannot be on or before startDate");
+    // })
     handleValidationErrors,
   ],
 
@@ -203,7 +215,5 @@ const validators = {
     next();
   },
 };
-
-
 
 module.exports = validators;
