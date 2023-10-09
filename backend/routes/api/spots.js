@@ -330,7 +330,7 @@ router.post("/:spotId/reviews", requireAuth, validators.checkExist, validators.v
 //Create a Booking from a Spot based on the Spot's id
 router.post("/:spotId/bookings", requireAuth, validators.checkExist, validators.checkSpotOwner, validators.validateBookingCreate,
   async (req, res, next) => {
-    const { startDate, endDate } = req.body;
+    let { startDate, endDate } = req.body;
     const userID = req.user.id;
 
       startDate = new Date(startDate).toISOString().slice(0, 10);
