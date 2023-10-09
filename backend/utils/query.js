@@ -92,6 +92,8 @@ const queryCheck = (req, _res, next) => {
 
   req.where = where;
   req.pagination = pagination;
+  req.page = page;
+  req.size = size;
 
   if (errorCheck) {
     return next(err);

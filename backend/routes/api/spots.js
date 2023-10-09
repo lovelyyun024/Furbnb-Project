@@ -52,20 +52,30 @@ router.get("/", queryCheck, async (req, res, next) => {
   const { where, pagination } = req;
   let allspots = await Spot.findAll({
     where,
-    ...pagination
+    ...pagination,
+    // attributes: [Sequelize.literal('"SpotImage"."preview"'), "preview"],
+    //  [sequelize.literal('laughReactionsCount'), 'DESC']
+    attributes: {
+      include: [
+        [
+          Sequelize.literal(`(
+                    SELECT url 
+                    FROM SpotImages
+                    WHERE
+                        SpotImages.preview = true
+                        AND
+                        SpotImages.spotId = Spot.id
+                )`),
+          "previewImage",
+        ],
+      ],
+    },
   });
-  // console.log(typeof allspots)
-
-  //   const firstTweet = await Tweet.findOne({
-  //     where: {
-  //       id: 1,
-  //     },
-  //   });
-
-  //   // Later using the tweet to get the user that created the tweet
-  //   const tweetOwner = await firstTweet.getUser();
 
   const spotsJSON = allspots.map((spot) => spot.toJSON());
+
+  // console.log("res  " + allspots);
+  // console.log("res  "+ spotsJSON)
 
   for (let spot of spotsJSON) {
     const total = await Review.sum("stars", {
@@ -80,17 +90,27 @@ router.get("/", queryCheck, async (req, res, next) => {
       },
     });
 
-    spot.avgRating = total / num;
 
-    const img = await SpotImage.findAll({
-      where: {
-        preview: true,
-        spotId: spot.id,
-      },
-      attributes: ["url"],
-    });
+    const avg = total / num
 
-    spot.previewImage = img;
+    if(num !== 0){
+      spot.avgRating = avg
+    } else {spot.avgRating = "No ratings yet"}
+
+    if(spot.previewImage === null){
+      spot.previewImage = "No preview images yet"
+    }
+
+
+    // const img = await SpotImage.findAll({
+    //   where: {
+    //     preview: true,
+    //     spotId: spot.id,
+    //   },
+    //   attributes: ["url"],
+    // });
+
+    // spot.previewImage = img;
   }
   //     const previewImg = await SpotImage.findOne({
   //       where: {
@@ -113,8 +133,8 @@ router.get("/", queryCheck, async (req, res, next) => {
 
   return res.json({
     spots: spotsJSON,
-    page: parseInt(req.query.page),
-    size: parseInt(req.query.size),
+    page: parseInt(req.page),
+    size: parseInt(req.size),
   });
 });
 
