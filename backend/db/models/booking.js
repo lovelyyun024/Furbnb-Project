@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
     /**
@@ -11,13 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-       Booking.belongsTo(models.User, {
-         foreignKey: "userId",
-       });
+      Booking.belongsTo(models.User, {
+        foreignKey: "userId",
+      });
 
-       Booking.belongsTo(models.Spot, {
-         foreignKey: "spotId",
-       });
+      Booking.belongsTo(models.Spot, {
+        foreignKey: "spotId",
+      });
     }
   }
   Booking.init(
@@ -30,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isBefore(value) {
             if (new Date(value) <= new Date(this.startDate)) {
-              throw new Error("endDate cannot come before startDate");
+              throw new Error("endDate cannot be on or before startDate");
             }
           },
         },

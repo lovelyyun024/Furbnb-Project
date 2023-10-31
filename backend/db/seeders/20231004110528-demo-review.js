@@ -14,27 +14,33 @@ module.exports = {
       [
         {
           spotId: 1,
-          userId: 3,
-          review: "OKKKKK",
-          stars: 3,
+          userId: 4,
+          review: "Great!",
+          stars: 4,
+        },
+        {
+          spotId: 1,
+          userId: 2,
+          review: "Nice place",
+          stars: 5,
         },
         {
           spotId: 2,
           userId: 4,
-          review: "OKKKKK",
+          review: "Just OK",
           stars: 3,
         },
         {
           spotId: 3,
           userId: 1,
-          review: "OKKKKK",
-          stars: 3,
+          review: "Would not recommend this place",
+          stars: 2,
         },
         {
           spotId: 5,
           userId: 4,
-          review: "OKKKKK",
-          stars: 3,
+          review: "Avoid this place",
+          stars: 1,
         },
       ],
       { validate: true }

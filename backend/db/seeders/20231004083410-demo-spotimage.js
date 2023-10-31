@@ -18,65 +18,32 @@ module.exports = {
           preview: true,
         },
         {
-          spotId: 1,
+          spotId: 2,
           url: "https://www.example.com/2",
           preview: true,
         },
+       
         {
-          spotId: 2,
+          spotId: 3,
           url: "https://www.example.com/3",
-          preview: false,
+          preview: true,
         },
         {
-          spotId: 2,
+          spotId: 4,
           url: "https://www.example.com/4",
           preview: true,
         },
         {
-          spotId: 3,
+          spotId: 5,
           url: "https://www.example.com/5",
           preview: true,
         },
         {
-          spotId: 3,
+          spotId: 6,
           url: "https://www.example.com/6",
           preview: true,
         },
-        {
-          spotId: 4,
-          url: "https://www.example.com/7",
-          preview: false,
-        },
-        {
-          spotId: 4,
-          url: "https://www.example.com/8",
-          preview: false,
-        },
-        {
-          spotId: 5,
-          url: "https://www.example.com/9",
-          preview: false,
-        },
-        {
-          spotId: 5,
-          url: "https://www.example.com/10",
-          preview: false,
-        },
-        {
-          spotId: 6,
-          url: "https://www.example.com/11",
-          preview: false,
-        },
-        {
-          spotId: 6,
-          url: "https://www.example.com/12",
-          preview: false,
-        },
-        {
-          spotId: 7,
-          url: "https://www.example.com/13",
-          preview: true
-        },
+
       ],
       { validate: true }
     );

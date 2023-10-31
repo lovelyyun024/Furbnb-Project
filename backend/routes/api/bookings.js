@@ -49,16 +49,26 @@ router.get("/current", requireAuth, async (req, res, next) => {
 router.put("/:bookingId", requireAuth, validators.checkExist, validators.checkOwner, validators.validateBookingCreate,
   async (req, res, next) => {
     const targetBooking = await Booking.findByPk(req.params.bookingId);
-    const { startDate, endDate } = req.body;
+    let { startDate, endDate } = req.body;
+
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+    
     const existBooking = await Booking.findOne({
-        where: {
-          [Op.or]: [
-            { startDate: { [Op.startsWith]: startDate } },
-             { endDate: { [Op.startsWith]: endDate } },
-          ],
-          spotId: targetBooking.spotId,
-        },
-      });
+      where: {
+        [Op.or]: [
+          { startDate: { [Op.between]: [startDate, endDate] } },
+          { endDate: { [Op.between]: [startDate, endDate] } },
+          {
+            [Op.and]: [
+              { startDate: { [Op.lte]: startDate } },
+              { endDate: { [Op.gte]: endDate } },
+            ],
+          },
+        ],
+        spotId: targetBooking.spotId,
+      },
+    });
     
     //   console.log("res   "+new Date());
     //   console.log("res   " + new Date(targetBooking.endDate));
