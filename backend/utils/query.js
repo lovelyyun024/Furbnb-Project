@@ -3,12 +3,13 @@ const { Op } = require("sequelize");
 const queryCheck = (req, _res, next) => {
   const pageErr = "Page must be greater than or equal to 1";
   const sizeErr = "Size must be greater than or equal to 1";
-  const mnLatErr = "Maximum latitude is invalid";
-  const mxLatErr = "Minimum latitude is invalid";
-  const mnLngErr = "Maximum longitude is invalid";
-  const mxLngErr = "Minimum longitude is invalid";
-  const minPriceErr = "Minimum price must be greater than or equal to 0";
-  const maxPriceErr = "Maximum price must be greater than or equal to 0";
+
+  const mnLatErr = "Minimum latitude is invalid";
+  const mxLatErr = "Maximum latitude is invalid";
+  const mnLngErr = "Minimum longitude is invalid";
+  const mxLngErr = "Maximum longitude is invalid";
+  const mnPriceErr = "Minimum price must be greater than or equal to 0";
+  const mxPriceErr = "Maximum price must be greater than or equal to 0";
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
   const pagination = {};
@@ -28,10 +29,7 @@ const queryCheck = (req, _res, next) => {
   err.status = 400;
   err.errors = {};
 
-  if (
-    page < 1
-    // || Number.isInteger(page)
-  ) {
+  if (page < 1) {
     errorCheck = true;
     err.errors.page = pageErr;
   }
@@ -41,34 +39,34 @@ const queryCheck = (req, _res, next) => {
     err.errors.size = sizeErr;
   }
 
-  if (minLat < -90) {
+  if (minLat < -90 || minLat > 90) {
     errorCheck = true;
     err.errors.minLat = mnLatErr;
   }
 
-  if (maxLat > 90) {
+  if (maxLat > 90 || maxLat < -90) {
     errorCheck = true;
     err.errors.maxLat = mxLatErr;
   }
 
-  if (minLng < -180) {
+  if (minLng < -180 || minLng > 180) {
     errorCheck = true;
     err.errors.minLng = mnLngErr;
   }
 
-  if (maxLng > 180) {
+  if (maxLng < -180 || maxLng > 180) {
     errorCheck = true;
     err.errors.maxLng = mxLngErr;
   }
 
   if (minPrice < 0) {
     errorCheck = true;
-    err.errors.minPrice = minPriceErr;
+    err.errors.minPrice = mnPriceErr;
   }
 
   if (maxPrice < 0) {
     errorCheck = true;
-    err.errors.maxPrice = maxPriceErr;
+    err.errors.maxPrice = mxPriceErr;
   }
 
   if (!page) page = 1;

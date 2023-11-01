@@ -27,21 +27,21 @@ router.get("/current", requireAuth, async (req, res, next) => {
     where: {
       ownerId: req.user.id,
     },
-    attributes: {
-      include: [
-        [
-          Sequelize.literal(`(
-                  SELECT url
-                  FROM SpotImages
-                  WHERE
-                      SpotImages.preview = true
-                      AND
-                      SpotImages.spotId = Spot.id
-              )`),
-          "previewImage",
-        ],
-      ],
-    },
+    // attributes: {
+    //   include: [
+    //     [
+    //       Sequelize.literal(`(
+    //               SELECT url
+    //               FROM SpotImages
+    //               WHERE
+    //                   SpotImages.preview = true
+    //                   AND
+    //                   SpotImages.spotId = Spot.id
+    //           )`),
+    //       "previewImage",
+    //     ],
+    //   ],
+    // },
   });
 
   allspots = allspots.map((spot) => spot.toJSON());
@@ -61,18 +61,22 @@ router.get("/current", requireAuth, async (req, res, next) => {
 
     const avg = total / num;
 
+    const previewUrl = await SpotImage.findOne({
+      where: {
+        spotId: spot.id,
+      },
+    });
+
     if (num !== 0) {
       spot.avgRating = avg;
-    } else {
-      spot.avgRating = "No ratings yet";
-    }
+    } else spot.avgRating = "No ratings yet"
 
-    if (spot.previewImage === null) {
+    if (previewUrl === null) {
       spot.previewImage = "No preview images yet";
-    }
-  }
+    } else spot.previewImage = previewUrl.url;}
 
   return res.json({ Spots: allspots });
+  
 });
 
 //Get details for a Spot from an id
@@ -178,7 +182,7 @@ router.get("/", queryCheck, async (req, res, next) => {
     if (previewUrl === null) {
       spot.previewImage = "No preview images yet";
     } else {
-      spot.previewImage = previewUrl.url
+      spot.previewImage = previewUrl.url;
     }
   }
 
@@ -368,20 +372,15 @@ router.post(
 );
 
 //Create a Booking from a Spot based on the Spot's id
-router.post(
-  "/:spotId/bookings",
-  requireAuth,
-  validators.checkExist,
-  validators.checkSpotOwner,
-  validators.validateBookingCreate,
-  async (req, res, next) => {
+router.post("/:spotId/bookings", requireAuth, validators.checkExist, 
+validators.checkSpotOwner, validators.validateBookingCreate, async (req, res, next) => {
     let { startDate, endDate } = req.body;
     const userID = req.user.id;
 
     startDate = new Date(startDate).toISOString();
     endDate = new Date(endDate).toISOString();
 
-    const existBooking = await Booking.findOne({
+    const existBooking = await Booking.findAll({
       where: {
         [Op.or]: [
           { startDate: { [Op.between]: [startDate, endDate] } },
@@ -398,7 +397,7 @@ router.post(
       },
     });
 
-    if (!existBooking) {
+    if (existBooking.length === 0) {
       const newBooking = Booking.build({
         spotId: req.params.spotId,
         userId: userID,

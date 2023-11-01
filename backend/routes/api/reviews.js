@@ -2,7 +2,13 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
-const { User, Spot, Review, SpotImage, ReviewImage } = require("../../db/models");
+const {
+  User,
+  Spot,
+  Review,
+  SpotImage,
+  ReviewImage,
+} = require("../../db/models");
 
 const router = express.Router();
 
@@ -41,7 +47,7 @@ router.put(
 
 //Get all Reviews of the Current User
 router.get("/current", requireAuth, async (req, res, next) => {
-  const targetReview = await Review.findAll({
+  let targetReview = await Review.findAll({
     where: {
       userId: req.user.id,
     },
@@ -54,33 +60,40 @@ router.get("/current", requireAuth, async (req, res, next) => {
         model: Spot,
         attributes: {
           exclude: ["createdAt", "updatedAt", "description"],
-          include: [
-            [
-              Sequelize.literal(`(
-                  SELECT url
-                  FROM SpotImages
-                  WHERE
-                      SpotImages.preview = true
-                      AND
-                      SpotImages.spotId = Spot.id
-              )`),
-              "previewImage",
-            ],
-          ],
         },
       },
       {
         model: ReviewImage,
-        attributes: ["id", "url"]
+        attributes: ["id", "url"],
       },
     ],
   });
 
-    res.json({ Reviews: targetReview });
+  targetReview = targetReview.map((review) => review.toJSON());
+
+  for (let review of targetReview) {
+    const previewUrl = await SpotImage.findOne({
+      where: {
+        spotId: review.spotId,
+      },
+    });
+
+    if (previewUrl === null) {
+      review.Spot.previewImage = "No preview images yet";
+    }
+    review.Spot.previewImage = previewUrl.url;
+    //  console.log(typeof review.ReviewImages[0].id)
+  }
+
+  res.json({ Reviews: targetReview });
 });
 
 //delete a review
-router.delete("/:reviewId",requireAuth, validators.checkExist, validators.checkOwner,
+router.delete(
+  "/:reviewId",
+  requireAuth,
+  validators.checkExist,
+  validators.checkOwner,
   async (req, res, next) => {
     const deleteReview = await Review.findByPk(req.params.reviewId);
     await deleteReview.destroy();
@@ -89,27 +102,32 @@ router.delete("/:reviewId",requireAuth, validators.checkExist, validators.checkO
 );
 
 //Add an Image to a Review based on the Review's id
-router.post("/:reviewId/images",requireAuth, validators.checkExist, validators.checkOwner,
+router.post(
+  "/:reviewId/images",
+  requireAuth,
+  validators.checkExist,
+  validators.checkOwner,
   async (req, res, next) => {
     const { url } = req.body;
     const ImgNum = await ReviewImage.count({
       where: {
-        reviewId: req.params.reviewId
-      }
-    });
-   
-    if(ImgNum < 10){
-    const newImage = ReviewImage.build({
-      reviewId: req.params.reviewId,
-      url,
+        reviewId: req.params.reviewId,
+      },
     });
 
-    await newImage.save();
+    if (ImgNum < 10) {
+      const newImage = ReviewImage.build({
+        reviewId: req.params.reviewId,
+        url,
+      });
 
-    res.json({ id: newImage.id, url: newImage.url })
-   } res.status(403).json({
-     message: "Maximum number of images for this resource was reached",
-   });
+      await newImage.save();
+
+      res.json({ id: newImage.id, url: newImage.url });
+    }
+    res.status(403).json({
+      message: "Maximum number of images for this resource was reached",
+    });
   }
 );
 
