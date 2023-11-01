@@ -2,7 +2,14 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
-const { User, Spot, Review, SpotImage, ReviewImage, Booking } = require("../../db/models");
+const {
+  User,
+  Spot,
+  Review,
+  SpotImage,
+  ReviewImage,
+  Booking,
+} = require("../../db/models");
 
 const router = express.Router();
 
@@ -54,15 +61,15 @@ router.get("/current", requireAuth, async (req, res, next) => {
 
     const avg = total / num;
 
-     if (num !== 0) {
-       spot.avgRating = avg;
-     } else {
-       spot.avgRating = "No ratings yet";
-     }
+    if (num !== 0) {
+      spot.avgRating = avg;
+    } else {
+      spot.avgRating = "No ratings yet";
+    }
 
-     if (spot.previewImage === null) {
-       spot.previewImage = "No preview images yet";
-     }
+    if (spot.previewImage === null) {
+      spot.previewImage = "No preview images yet";
+    }
   }
 
   return res.json({ Spots: allspots });
@@ -76,7 +83,7 @@ router.get("/:spotId", validators.checkExist, async (req, res, next) => {
       {
         model: User,
         attributes: ["id", "firstName", "lastName"],
-        as: "Owner"
+        as: "Owner",
       },
     ],
   });
@@ -95,13 +102,13 @@ router.get("/:spotId", validators.checkExist, async (req, res, next) => {
     },
   });
 
-  const avg = total / num
+  const avg = total / num;
 
   spotDetail.numReviews = num;
 
-   if (total !== null) {
-     spotDetail.avgRating = avg;
-   } else spotDetail.avgRating = "No ratings yet";
+  if (total !== null) {
+    spotDetail.avgRating = avg;
+  } else spotDetail.avgRating = "No ratings yet";
 
   return res.json(spotDetail);
 });
@@ -112,28 +119,28 @@ router.get("/", queryCheck, async (req, res, next) => {
   let allspots = await Spot.findAll({
     where,
     ...pagination,
-    attributes: {
-    include: [
-      [
-        Sequelize.literal(`(
-                  SELECT url
-                  FROM SpotImages
-                  WHERE
-                      SpotImages.preview = true
-                      AND
-                      SpotImages.spotId = Spot.id
-              )`),
-        "previewImage",
-      ]
-    ],
-    },
+    // attributes: {
+    // include: [
+    //   [
+    //     Sequelize.literal(`(
+    //               SELECT url
+    //               FROM SpotImages
+    //               WHERE
+    //                   SpotImages.preview = true
+    //                   AND
+    //                   SpotImages.spotId = Spot.id
+    //           )`),
+    //     "previewImage",
+    //   ]
+    // ],
+    // },
 
     // include: [{ model: SpotImage, attributes: ["url"] }],
 
     // attributes: {
     //   include: [
     //     [Sequelize.fn("sum", Sequelize.col("spot.price")), "minPrice"],
-        
+
     //   ],
     // },
   });
@@ -153,15 +160,25 @@ router.get("/", queryCheck, async (req, res, next) => {
       },
     });
 
+    const avg = total / num;
 
-    const avg = total / num
+    const previewUrl = await SpotImage.findOne({
+      where: {
+        spotId: spot.id,
+      },
+      attributes: ["url"],
+    });
 
-    if(num !== 0){
-      spot.avgRating = avg
-    } else {spot.avgRating = "No ratings yet"}
+    if (num !== 0) {
+      spot.avgRating = avg;
+    } else {
+      spot.avgRating = "No ratings yet";
+    }
 
-    if(spot.previewImage === null){
-      spot.previewImage = "No preview images yet"
+    if (previewUrl === null) {
+      spot.previewImage = "No preview images yet";
+    } else {
+      spot.previewImage = previewUrl.url
     }
   }
 
@@ -173,29 +190,33 @@ router.get("/", queryCheck, async (req, res, next) => {
 });
 
 //Get all Reviews by a Spot's id
-router.get("/:spotId/reviews", validators.checkExist, async (req, res, next) => {
-  const targetReview = await Review.findAll( {
-    where:{
-      spotId:req.params.spotId
-    },
-    include: [
-      {
-        model: User,
-        attributes: ["id", "firstName", "lastName"],
+router.get(
+  "/:spotId/reviews",
+  validators.checkExist,
+  async (req, res, next) => {
+    const targetReview = await Review.findAll({
+      where: {
+        spotId: req.params.spotId,
       },
-      {
-        model: ReviewImage,
-        attributes: ["id", "url"],
-      },
-    ],
-  });
+      include: [
+        {
+          model: User,
+          attributes: ["id", "firstName", "lastName"],
+        },
+        {
+          model: ReviewImage,
+          attributes: ["id", "url"],
+        },
+      ],
+    });
 
-  // const spotDetail = targetSpot.toJSON();
+    // const spotDetail = targetSpot.toJSON();
 
-  // if (Object.keys(targetReview).length == 0) {
+    // if (Object.keys(targetReview).length == 0) {
     return res.json({ Reviews: targetReview });
-  // } else res.json({ message: "No reviews yet." });
-});
+    // } else res.json({ message: "No reviews yet." });
+  }
+);
 
 // create a new spot
 router.post(
@@ -276,8 +297,6 @@ router.put(
   }
 );
 
-
-
 //delete a spot
 router.delete(
   "/:spotId",
@@ -313,9 +332,13 @@ router.post(
 );
 
 //Create a Review for a Spot based on the Spot's id
-router.post("/:spotId/reviews", requireAuth, validators.checkExist, validators.validateReviewCreate,
+router.post(
+  "/:spotId/reviews",
+  requireAuth,
+  validators.checkExist,
+  validators.validateReviewCreate,
   async (req, res, next) => {
-    const {review, stars} = req.body;
+    const { review, stars } = req.body;
     const userID = req.user.id;
 
     const existReview = await Review.findOne({
@@ -325,22 +348,23 @@ router.post("/:spotId/reviews", requireAuth, validators.checkExist, validators.v
       },
     });
 
-    console.log(existReview)
-    if(!existReview){
-    const newReview = Review.build({
-      spotId: req.params.spotId,
-      userId: userID,
-      review,
-      stars
-    });
+    console.log(existReview);
+    if (!existReview) {
+      const newReview = Review.build({
+        spotId: req.params.spotId,
+        userId: userID,
+        review,
+        stars,
+      });
 
-    await newReview.save();
-    res.status(201).json(newReview)
-  } else {
-      res.status(500).json({message: "User already has a review for this spot"})
-      }
+      await newReview.save();
+      res.status(201).json(newReview);
+    } else {
+      res
+        .status(500)
+        .json({ message: "User already has a review for this spot" });
     }
-    
+  }
 );
 
 //Create a Booking from a Spot based on the Spot's id
@@ -354,9 +378,9 @@ router.post(
     let { startDate, endDate } = req.body;
     const userID = req.user.id;
 
-      startDate = new Date(startDate).toISOString();
-      endDate = new Date(endDate).toISOString();
-   
+    startDate = new Date(startDate).toISOString();
+    endDate = new Date(endDate).toISOString();
+
     const existBooking = await Booking.findOne({
       where: {
         [Op.or]: [
@@ -396,33 +420,38 @@ router.post(
   }
 );
 
-
 //Get all Bookings for a Spot based on the Spot's id
-router.get("/:spotId/bookings", requireAuth, validators.checkExist, async (req, res, next) => {
-  const spot = await Spot.findByPk(req.params.spotId)
-  let booking;
-  if(spot.ownerId === req.user.id){
+router.get(
+  "/:spotId/bookings",
+  requireAuth,
+  validators.checkExist,
+  async (req, res, next) => {
+    const spot = await Spot.findByPk(req.params.spotId);
+    let booking;
+    if (spot.ownerId === req.user.id) {
       booking = await Booking.findAll({
-      where: {
-        spotId: req.params.spotId,
-      },
-      include: [
-        {
-          model: User,
-          attributes: ["id", "firstName", "lastName"],
+        where: {
+          spotId: req.params.spotId,
         },
-      ],
-    });
-    return res.json({ Bookings: booking })
-  }{
-     booking = await Booking.findAll({
-       where: {
-         spotId: req.params.spotId,
-       },
-       attributes: ["spotId", "startDate", "endDate"],
-     });
-    return res.json({ Bookings: booking });
-  };
-});
+        include: [
+          {
+            model: User,
+            attributes: ["id", "firstName", "lastName"],
+          },
+        ],
+      });
+      return res.json({ Bookings: booking });
+    }
+    {
+      booking = await Booking.findAll({
+        where: {
+          spotId: req.params.spotId,
+        },
+        attributes: ["spotId", "startDate", "endDate"],
+      });
+      return res.json({ Bookings: booking });
+    }
+  }
+);
 
 module.exports = router;
