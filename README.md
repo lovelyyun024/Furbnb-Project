@@ -15,7 +15,7 @@
 <!--!!END -->
 <!--!!ADD -->
 <!-- `<insert database schema design here>` -->
-![db-schema]
+
 
 <!--!!END_ADD -->
 

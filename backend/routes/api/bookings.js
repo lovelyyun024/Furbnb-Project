@@ -93,14 +93,14 @@ router.put(
     //   console.log("res   " + new Date(targetBooking.endDate));
 
     if (existBooking.length === 0) {
-      // targetBooking.set({
-      //   startDate,
-      //   endDate,
-      //   updatedAt: Sequelize.literal("CURRENT_TIMESTAMP"),
-      // });
-      targetBooking.startDate = startDate;
-      targetBooking.endDate = endDate;
-      targetBooking.updatedAt = Sequelize.literal("CURRENT_TIMESTAMP");
+      targetBooking.set({
+        startDate,
+        endDate,
+        updatedAt: Sequelize.literal("CURRENT_TIMESTAMP"),
+      });
+      // targetBooking.startDate = startDate;
+      // targetBooking.endDate = endDate;
+      // targetBooking.updatedAt = Sequelize.literal("CURRENT_TIMESTAMP");
 
       await targetBooking.save();
       res.json(targetBooking);

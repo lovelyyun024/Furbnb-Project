@@ -63,6 +63,7 @@ router.use("/reviews", reviewsRouter);
 
 router.use("/bookings", bookingsRouter);
 
+//remember to comment out
 router.post('/test', (req, res) => {
   res.json({ requestBody: req.body });
 });
