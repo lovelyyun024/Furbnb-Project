@@ -352,7 +352,7 @@ router.post(
       },
     });
 
-    console.log(existReview);
+    // console.log(existReview);
     if (!existReview) {
       const newReview = Review.build({
         spotId: req.params.spotId,
