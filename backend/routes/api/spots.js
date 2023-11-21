@@ -68,8 +68,8 @@ router.get("/current", requireAuth, async (req, res, next) => {
     });
 
     if (num !== 0) {
-      spot.avgRating = avg;
-    } else spot.avgRating = "No ratings yet"
+      spot.avgRating = `★${avg}`;
+    } else spot.avgRating = "New"
 
     if (previewUrl === null) {
       spot.previewImage = "No preview images yet";
@@ -111,8 +111,8 @@ router.get("/:spotId", validators.checkExist, async (req, res, next) => {
   spotDetail.numReviews = num;
 
   if (total !== null) {
-    spotDetail.avgRating = avg;
-  } else spotDetail.avgRating = "No ratings yet";
+    spotDetail.avgRating = `★${avg}`;
+  } else spotDetail.avgRating = "New";
 
   return res.json(spotDetail);
 });
@@ -174,9 +174,9 @@ router.get("/", queryCheck, async (req, res, next) => {
     });
 
     if (num !== 0) {
-      spot.avgRating = avg;
+      spot.avgRating = `★${avg}`;
     } else {
-      spot.avgRating = "No ratings yet";
+      spot.avgRating = "New";
     }
 
     if (previewUrl === null) {

@@ -7,3 +7,15 @@ ul{
     padding-right: 40px;
 
 }
+
+li{
+list-style-type:none;
+}
+
+img{
+    width:100px
+}
+
+/* ProfileButton{
+    width:200px
+} */

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation';
+import SpotList from './components/SpotList/SpotList'
 import * as sessionActions from './store/session';
 
 function Layout() {
@@ -27,11 +28,11 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: '/',
-        element: <h1>Welcome!</h1>
-      }
-    ]
-  }
+        path: "/",
+        element: <SpotList />,
+      },
+    ],
+  },
 ]);
 
 function App() {

@@ -217,6 +217,8 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import "./ProfileButton.css";
+import { TfiMenu } from "react-icons/tfi";
+import { FaCircleUser } from "react-icons/fa6";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -255,7 +257,9 @@ function ProfileButton({ user }) {
   return (
     <>
       <button onClick={toggleMenu}>
-        <i className="fas fa-user-circle" />
+        <TfiMenu />
+        <FaCircleUser />
+        {/* <i className="fas fa-user-circle" /> */}
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
@@ -264,7 +268,7 @@ function ProfileButton({ user }) {
             <li>
               {user.firstName} {user.lastName}
             </li>
-            <li>{user.email}</li>
+            <li> {user.email}</li>
             <li>
               <button onClick={logout}>Log Out</button>
             </li>
