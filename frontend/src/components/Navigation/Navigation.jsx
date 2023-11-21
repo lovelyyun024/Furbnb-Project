@@ -60,7 +60,7 @@ function Navigation({ isLoaded }) {
       <li>
         <NavLink exact to="/">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/512px-Airbnb_Logo_B%C3%A9lo.svg.png?20230603231949"
+            src="https://scontent-sea1-1.xx.fbcdn.net/v/t1.6435-9/211426966_276777007455136_8557162422871458312_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=be3454&_nc_ohc=8_SRFE7fi2kAX--3pSO&_nc_ht=scontent-sea1-1.xx&oh=00_AfCoilr_f2DEWk8-K83aTH4Y3kM0gHuR90eU3EOMz1yooA&oe=65849C6A"
             alt="Logo"
           />
         </NavLink>
