@@ -114,15 +114,12 @@ module.exports = {
     return queryInterface.bulkDelete(
       options,
       {
-        name: {
+        ownerId: {
           [Op.in]: [
-            "SOHO 93",
-            "SOHO 380",
-            "SOHO 177",
-            "SOHO 202",
-            "SOHO 46",
-            "SOHO 22",
-            "SOHO 75",
+            "1",
+            "2",
+            "3",
+            "4"
           ],
         },
       },

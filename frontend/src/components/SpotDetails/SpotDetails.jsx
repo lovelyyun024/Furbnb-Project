@@ -30,7 +30,7 @@ return (
         {spotsData.city}, {spotsData.state}, {spotsData.country}
       </h3>
       <img src={spotsData.SpotImages[0].url} alt="Airbnb Image" />
-      <div style = {{borderBottom: "1px solid #000000"}}>
+      <div style={{ borderBottom: "1px solid #000000" }}>
         <h2>
           Hosted by {spotsData.Owner.firstName} {spotsData.Owner.lastName}
         </h2>
@@ -38,15 +38,12 @@ return (
         <div>
           <p>${spotsData.price} night</p>
           <p>
-            {spotsData.avgRating} {spotsData.numReviews} reviews
+            {spotsData.avgRating} · {spotsData.numReviews} reviews
           </p>
           <button type="button" onClick={() => alert("Feature Coming Soon...")}>
             Reserve
           </button>
           <p></p>
-        </div>
-        <div>
-
         </div>
       </div>
     </div>

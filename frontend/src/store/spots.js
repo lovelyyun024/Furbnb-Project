@@ -1,5 +1,3 @@
-
-
 const GET_ALL_SPOTS = "spots/getAllSpots";
 const GET_ONE_SPOT = "spots/getOneSpot";
 
@@ -34,7 +32,7 @@ export const getOneSpot = (spotId) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
-    console.log("detail",data)
+    // console.log("detail",data)
     dispatch(loadOneSpot(data));
     return data;
   }

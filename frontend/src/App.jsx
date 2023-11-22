@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation';
 import SpotList from './components/SpotList/SpotList'
 import SpotDetails from './components/SpotDetails/SpotDetails'
+import ReviewList from './components/ReviewList/ReviewList'
 import * as sessionActions from './store/session';
 
 function Layout() {
@@ -34,7 +35,14 @@ const router = createBrowserRouter([
       },
       {
         path: "/spots/:spotId",
-        element: <SpotDetails />,
+        element: (
+          <>
+            <SpotDetails />
+            {/* <Outlet /> */}
+            <ReviewList />
+          </>
+        ),
+        // children: [{ path: "reviews", element: <ReviewList /> }],
       },
     ],
   },

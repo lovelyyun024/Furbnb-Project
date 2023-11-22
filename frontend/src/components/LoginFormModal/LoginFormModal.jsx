@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import * as sessionActions from '../../store/session';
-import { useDispatch } from 'react-redux';
-import { useModal } from '../../context/Modal';
-import './LoginForm.css';
+import { useState } from "react";
+import * as sessionActions from "../../store/session";
+import { useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
+import "./LoginForm.css";
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -10,6 +10,12 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  let disableButton = "";
+
+  const autoFillCredentials = () => {
+     setCredential("demo@user.io");
+     setPassword("password1");
+   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,6 +29,8 @@ function LoginFormModal() {
         }
       });
   };
+
+  if (credential.length < 4 || password.length < 6) disableButton = "disabled";
 
   return (
     <>
@@ -46,10 +54,13 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && (
-          <p>{errors.credential}</p>
-        )}
-        <button type="submit">Log In</button>
+        {errors.credential && <p>{errors.credential}</p>}
+        {errors.password && <p>{errors.password}</p>}
+        <button type="submit" disabled={disableButton}>
+          Log In
+        </button>
+
+        <button onClick={autoFillCredentials}>Demo User</button>
       </form>
     </>
   );

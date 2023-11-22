@@ -14,11 +14,13 @@ const { handleValidationErrors } = require("../../utils/validation");
 const validateLogin = [
   check("credential")
     .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage("Email or username is required"),
+    .isLength({ min: 4 })
+    .withMessage("Username must be 4 characters or more"),
   check("password")
     .exists({ checkFalsy: true })
-    .withMessage("Password is required"),
+    .isLength({ min: 6 })
+    .withMessage("Password must be 6 characters or more."),
+
   handleValidationErrors,
 ];
 
@@ -42,7 +44,7 @@ router.post(
       const err = new Error("Invalid credentials");
       err.status = 401;
       // err.title = 'Login failed';
-      // err.errors = { credential: 'The provided credentials were invalid.' };
+      err.errors = { credential: 'The provided credentials were invalid.' };
       return next(err);
     }
 

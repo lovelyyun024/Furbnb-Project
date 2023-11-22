@@ -16,19 +16,21 @@ export default function SpotList() {
     dispatch(getAllSpots());
   }, [dispatch]);
 
+  if(!spotList) return null
+  
   return (
     <>
-      {spotList?.map(({ id, city, state, previewImage, avgRating, price }) => (
+      {spotList.map(({ id, city, state, previewImage, avgRating, price }) => (
         <div key={id} className="spot">
           <NavLink exact to={`/spots/${id}`} style={{ textDecoration: "none" }}>
-            <img key={id} src={previewImage} alt="Airbnb Image" />
+            <img src={previewImage} alt="Airbnb Image" />
             <div className="star">
-              <p key={id}>
+              <p >
                 {city}, {state}
               </p>
-              <p key={id}>{avgRating}</p>
+              <p >{avgRating}</p>
             </div>
-            <p key={id}>${price} night</p>
+            <p >${price} night</p>
           </NavLink>
         </div>
       ))}
