@@ -219,6 +219,7 @@ import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import "./ProfileButton.css";
 import { TfiMenu } from "react-icons/tfi";
 import { FaCircleUser } from "react-icons/fa6";
+import { NavLink } from "react-router-dom";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -270,7 +271,11 @@ function ProfileButton({ user }) {
             </li>
             <li> {user.email}</li>
             <li>
-              <button onClick={logout}>Log Out</button>
+              <button onClick={logout}>
+                <NavLink exact to="/" style={{ textDecoration: "none" }}>
+                  Log Out
+                </NavLink>
+              </button>
             </li>
           </>
         ) : (
