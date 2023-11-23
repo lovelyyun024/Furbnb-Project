@@ -5,6 +5,7 @@ import Navigation from './components/Navigation/Navigation';
 import SpotList from './components/SpotList/SpotList'
 import SpotDetails from './components/SpotDetails/SpotDetails'
 import ReviewList from './components/ReviewList/ReviewList'
+import CreateSpot from './components/CreateSpot/CreateSpot';
 import * as sessionActions from './store/session';
 
 function Layout() {
@@ -38,11 +39,13 @@ const router = createBrowserRouter([
         element: (
           <>
             <SpotDetails />
-            {/* <Outlet /> */}
             <ReviewList />
           </>
         ),
-        // children: [{ path: "reviews", element: <ReviewList /> }],
+      },
+      {
+        path: "/spots/new",
+        element: <CreateSpot />,
       },
     ],
   },

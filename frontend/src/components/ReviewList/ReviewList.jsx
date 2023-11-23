@@ -31,17 +31,20 @@ const reviewList = Object.values(reviewsData);
    if(!reviewList) return null
     if (!spotsData) return null;
 
+      const reviews =
+        spotsData.numReviews == 0 ? "" : ` · ${spotsData.numReviews} reviews `;
+
   return (
     <>
       <h2>
-        {spotsData.avgRating} · {spotsData.numReviews} reviews
+        {spotsData.avgRating} {reviews}
       </h2>
 
       {reviewList?.map(({ id, review, User, createdAt }) => (
         <div key={id} className="review">
-          <h3 > {User.firstName}</h3>
-          <h5 > {createdAt.slice(0, 10)} </h5>
-          <p > {review}</p>
+          <h3> {User.firstName}</h3>
+          <h5> {createdAt.slice(0, 10)} </h5>
+          <p> {review}</p>
         </div>
       ))}
     </>

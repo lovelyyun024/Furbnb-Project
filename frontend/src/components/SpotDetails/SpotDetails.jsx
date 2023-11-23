@@ -6,48 +6,61 @@ import { getOneSpot } from "../../store/spots";
 import './SpotDetails.css'
 
 export default function SpotDetails() {
-const dispatch = useDispatch()
-const { spotId } = useParams();
-// console.log("id", spotId)
+  const dispatch = useDispatch();
+  const { spotId } = useParams();
+  // console.log("id", spotId)
 
- const spotsData = useSelector((state) => state.spots.spot);
+  const spotsData = useSelector((state) => state.spots.spot);
+  // const numReviews = spotsData.numReviews?
+  // const reviews = numReviews == 0 ? "" : ` · ${spotsData.numReviews} reviews `;
+  //  const spotDetail = Object.values(spotsData);
+  //  console.log("result", spotsData);
+  //   console.log("result", spotsData.Owner);
 
-//  const spotDetail = Object.values(spotsData);
-//  console.log("result", spotsData);
-//   console.log("result", spotsData.Owner);
+  useEffect(() => {
+    dispatch(getOneSpot(spotId));
+  }, [dispatch, spotId]);
 
-   useEffect(() => {
-     dispatch(getOneSpot(spotId));
-   }, [dispatch]);
+  if (!spotsData) return null;
 
-   if (!spotsData) return null
+  const reviews =
+    spotsData.numReviews == 0 ? "" : ` · ${spotsData.numReviews} reviews `;
 
-return (
-  <>
-    <div>
-      <h2>{spotsData.name}</h2>
-      <h3>
-        {spotsData.city}, {spotsData.state}, {spotsData.country}
-      </h3>
-      <img src={spotsData.SpotImages[0].url} alt="Airbnb Image" />
-      <div style={{ borderBottom: "1px solid #000000" }}>
-        <h2>
-          Hosted by {spotsData.Owner.firstName} {spotsData.Owner.lastName}
-        </h2>
-        <p>{spotsData.description}</p>
-        <div>
-          <p>${spotsData.price} night</p>
-          <p>
-            {spotsData.avgRating} · {spotsData.numReviews} reviews
-          </p>
-          <button type="button" onClick={() => alert("Feature Coming Soon...")}>
-            Reserve
-          </button>
-          <p></p>
+  return (
+    <>
+      <div>
+        <h2>{spotsData.name}</h2>
+        <h3>
+          {spotsData.city}, {spotsData.state}, {spotsData.country}
+        </h3>
+
+        {spotsData.SpotImages.map(({ id, url }) => (
+          <div key={id} className="spotImage">
+            <img src={url} alt="Airbnb Image" />
+            <p></p>
+          </div>
+        ))}
+
+        <div style={{ borderBottom: "1px solid #000000" }}>
+          <h2>
+            Hosted by {spotsData.Owner.firstName} {spotsData.Owner.lastName}
+          </h2>
+          <p>{spotsData.description}</p>
+          <div>
+            <p>${spotsData.price} night</p>
+            <p>
+              {spotsData.avgRating} {reviews}
+            </p>
+            <button
+              type="button"
+              onClick={() => alert("Feature Coming Soon...")}
+            >
+              Reserve
+            </button>
+            <p></p>
+          </div>
         </div>
       </div>
-    </div>
-  </>
-);
-
+    </>
+  );
 }

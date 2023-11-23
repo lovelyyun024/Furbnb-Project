@@ -10,7 +10,7 @@ export default function SpotList() {
 
   const spotsData = useSelector((state) => state.spots);
   const spotList = Object.values(spotsData);
-  console.log("result", spotsData);
+
 
   useEffect(() => {
     dispatch(getAllSpots());

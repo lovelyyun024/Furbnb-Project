@@ -3,11 +3,13 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import spots from "./spots";
 import reviews from "./reviews";
+import spotImages from './spotImages'
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   spots,
-  reviews
+  reviews,
+  spotImages
 });
 
 let enhancer;

@@ -69,7 +69,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
 
     if (num !== 0) {
       spot.avgRating = `★${avg}`;
-    } else spot.avgRating = "New"
+    } else spot.avgRating = "★ New"
 
     if (previewUrl === null) {
       spot.previewImage = "No preview images yet";
@@ -112,7 +112,7 @@ router.get("/:spotId", validators.checkExist, async (req, res, next) => {
 
   if (total !== null) {
     spotDetail.avgRating = `★${avg}`;
-  } else spotDetail.avgRating = "New";
+  } else spotDetail.avgRating = "★ New";
 
   return res.json(spotDetail);
 });
