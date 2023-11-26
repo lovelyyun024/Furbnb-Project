@@ -23,8 +23,9 @@ export default function SpotDetails() {
 
   if (!spotsData) return null;
 
+  const verb = spotsData.numReviews === 1 ? "review" : "reviews";
   const reviews =
-    spotsData.numReviews == 0 ? "" : ` · ${spotsData.numReviews} reviews `;
+    spotsData.numReviews == 0 ? "" : ` · ${spotsData.numReviews} ${verb}`;
 
   return (
     <>

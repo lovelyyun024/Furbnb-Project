@@ -28,19 +28,17 @@ const CreateSpot = () => {
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
-  
-  
+
   const spotsData = useSelector((state) => state.spots.spots);
   // const { closeModal } = useModal();
   const spotId = spotsData?.id;
-  
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!url1) {
       return setErrors({
-        url1: "Preview image is required",
+        url1: "Preview image is required.",
       });
     }{
       dispatch(
@@ -55,50 +53,50 @@ const CreateSpot = () => {
           description,
           price,
         })
-        )
+      )
         // .then(closeModal)
         .catch(async (res) => {
           const data = await res.json();
+          console.log("label", data)
           if (data?.errors) {
             setErrors(data.errors);
           }
-        })
-        
-      }
-    };
-    
-    if (spotId) {
-      const imgArray = [url1, url2, url3, url4, url5];
-      
-      imgArray.forEach((url) => {
-        if (url) {
-          const objImg = { url: url, preview: preview };
-          dispatch(createSpotImg(objImg, spotId), [dispatch]);
-        }
-      });
-      
-      // reset()
-      navigate(`/spots/${spotId}`);
+        });
     }
+  };
 
-    // const reset = () => {
-    //      setAddress("");
-    //      setCity("");
-    //      setState("");
-    //      setCountry("");
-    //      setLat("");
-    //      setLng("");
-    //      setName("");
-    //      setDescription("");
-    //      setPrice("");
-    //      setUrl1("");
-    //      setUrl2("");
-    //      setUrl3("");
-    //      setUrl4("");
-    //      setUrl5("");
-    //      setPreview("true");
-    // };
-      
+  if (spotId) {
+    const imgArray = [url1, url2, url3, url4, url5];
+
+    imgArray.forEach((url) => {
+      if (url) {
+        const objImg = { url: url, preview: preview };
+        dispatch(createSpotImg(objImg, spotId), [dispatch]);
+      }
+    });
+
+    // reset()
+    navigate(`/spots/${spotId}`);
+  }
+
+  // const reset = () => {
+  //      setAddress("");
+  //      setCity("");
+  //      setState("");
+  //      setCountry("");
+  //      setLat("");
+  //      setLng("");
+  //      setName("");
+  //      setDescription("");
+  //      setPrice("");
+  //      setUrl1("");
+  //      setUrl2("");
+  //      setUrl3("");
+  //      setUrl4("");
+  //      setUrl5("");
+  //      setPreview("true");
+  // };
+
   return (
     <>
       <h1>Create a new Spot</h1>
@@ -107,71 +105,69 @@ const CreateSpot = () => {
         Guests will only get your exact address once they booked a reservation.
       </p>
       <form onSubmit={handleSubmit}>
-        <div style={{ borderBottom: "1px solid #000000" }}>
-          <label>
-            Country
-            <input
-              type="text"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              // required
-            />
-          </label>
+        <div
+          style={{
+            borderBottom: "1px solid #000000",
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: "10px",
+          }}
+        >
+          <label>Country</label>
+          <input
+            type="text"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            // required
+          />
           {errors.country && <p>{errors.country}</p>}
 
-          <label>
-            Street Address
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              // required
-            />
-          </label>
+          <label>Street Address</label>
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            // required
+          />
           {errors.address && <p>{errors.address}</p>}
 
-          <label>
-            City
-            <input
-              type="text"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              // required
-            />
-          </label>
+          <label>City</label>
+          <input
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            // required
+          />
           {errors.city && <p>{errors.city}</p>}
 
-          <label>
-            State
-            <input
-              type="text"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-              // required
-            />
-          </label>
+          <label>State</label>
+          <input
+            type="text"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            // required
+          />
           {errors.state && <p>{errors.state}</p>}
 
-          <label>
-            Latitude
-            <input
-              type="text"
-              value={lat}
-              onChange={(e) => setLat(e.target.value)}
-            />
-          </label>
+          <label>Latitude</label>
+          <input
+            type="text"
+            value={lat}
+            onChange={(e) => setLat(e.target.value)}
+          />
           {errors.lat && <p>{errors.lat}</p>}
 
-          <label>
-            Longitude
-            <input
-              type="text"
-              value={lng}
-              onChange={(e) => setLng(e.target.value)}
-            />
-          </label>
+          <label>Longitude</label>
+          <input
+            type="text"
+            value={lng}
+            onChange={(e) => setLng(e.target.value)}
+          />
           {errors.lng && <p>{errors.lng}</p>}
+          <p></p>
+        </div>
 
+        <div style={{ borderBottom: "1px solid #000000" }}>
           <h3>Describe your place to guests</h3>
           <p>
             Mention the best features of your space, any special amentities like
@@ -209,20 +205,30 @@ const CreateSpot = () => {
             Competitive pricing can help your listing stand out and rank higher
             in search results.
           </p>
-          <input
-            type="text"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            // required
-          />
-          {errors.price && <p>{errors.price}</p>}
+          <div>
+            $ &nbsp;
+            <input
+              type="text"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              // required
+            />
+            {errors.price && <p>{errors.price}</p>}
+          </div>
           <p></p>
         </div>
 
         <div style={{ borderBottom: "1px solid #000000" }}>
           <h3>Liven up your spot with photos</h3>
           <p>Submit a link to at least one photo to publish your spot.</p>
-          <div>
+          <div
+            style={{
+              borderBottom: "1px solid #000000",
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: "10px",
+            }}
+          >
             <input
               type="text"
               value={url1}

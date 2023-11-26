@@ -59,7 +59,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
       },
     });
 
-    const avg = total / num;
+    const avg = Number((total / num).toFixed(2));
 
     const previewUrl = await SpotImage.findOne({
       where: {
@@ -106,7 +106,7 @@ router.get("/:spotId", validators.checkExist, async (req, res, next) => {
     },
   });
 
-  const avg = total / num;
+  const avg = Number((total / num).toFixed(2));
 
   spotDetail.numReviews = num;
 
@@ -164,7 +164,7 @@ router.get("/", queryCheck, async (req, res, next) => {
       },
     });
 
-    const avg = total / num;
+    const avg = Number((total / num).toFixed(2));
 
     const previewUrl = await SpotImage.findOne({
       where: {

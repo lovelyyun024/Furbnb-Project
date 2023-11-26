@@ -20,7 +20,7 @@ export default function SpotList() {
   
   return (
     <>
-      {spotList.map(({ id, city, state, previewImage, avgRating, price }) => (
+      {[...spotList].reverse().map(({ id, city, state, previewImage, avgRating, price }) => (
         <div key={id} className="spot">
           <NavLink exact to={`/spots/${id}`} style={{ textDecoration: "none" }}>
             <img src={previewImage} alt="Airbnb Image" />
