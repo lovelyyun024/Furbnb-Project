@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
-import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import ReviewFormModal from "../ReviewFormModal/ReviewFormModal.jsx"
 import "./ReviewList.css";
 
@@ -10,6 +9,7 @@ const CreateReviewButton = ({ show, id }) => {
   const spotId = id
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
+  const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
@@ -29,23 +29,28 @@ const CreateReviewButton = ({ show, id }) => {
     document.addEventListener("click", closeMenu);
 
     return () => document.removeEventListener("click", closeMenu);
-  }, [showMenu]);
+  }, [showMenu, isReviewSubmitted]);
 
   const closeMenu = () => setShowMenu(false);
-  // console.log(showReviewButton)
 
   return (
     <>
-      {showReviewButton && (
-        // <button>Post Your Review</button>
-        <div className="OpenModalButton">
-          <OpenModalMenuItem
-            itemText="Post Your Review!"
-            onItemClick={closeMenu}
-            modalComponent={<ReviewFormModal id={spotId} />}
-          />
-        </div>
-      )}
+      {showReviewButton &&
+        !isReviewSubmitted && (
+          <div className="OpenModalButton">
+            <OpenModalMenuItem
+              itemText="Post Your Review!"
+              onItemClick={closeMenu}
+              modalComponent={
+                <ReviewFormModal
+                  // show={showReviewButton && !isReviewSubmitted} 
+                  id={spotId}
+                  onReviewSubmitted={() => setIsReviewSubmitted(true)}
+                />
+              }
+            />
+          </div>
+        )}
     </>
   );
 };

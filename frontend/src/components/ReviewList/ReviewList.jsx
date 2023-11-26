@@ -29,10 +29,12 @@ export default function ReviewList() {
 
   useEffect(() => {
     if (spotsData && currentUser && spotsData.ownerId !== currentUser.id) {
+      // console.log("here1")
       const userHasReviewed = reviewList.find(
         (review) => review.userId == currentUser.id
       );
       if (!userHasReviewed) {
+        //  console.log("here2");
         setShowReviewButton(true);
       }
     }

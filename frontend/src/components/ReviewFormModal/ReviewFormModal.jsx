@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import * as reviewsActions from "../../store/reviews";
 import "./ReviewFormModal.css";
 
-function ReviewFormModal({ id }) {
+function ReviewFormModal({ show, id, onReviewSubmitted }) {
   const dispatch = useDispatch();
   const [review, setReview] = useState("");
   const [stars, setStars] = useState(0);
@@ -14,7 +14,7 @@ function ReviewFormModal({ id }) {
   const starArray = [1, 2, 3, 4, 5];
   const spotId = id;
   let disableButton = "";
-  //   console.log("!!!!", spotId);
+
 
   const handleRatingChange = (star) => {
     setStars(star);
@@ -27,16 +27,18 @@ function ReviewFormModal({ id }) {
       stars,
     };
 
-     dispatch(reviewsActions.createReview(reviewData, spotId))
-       .then(closeModal)
-       .catch(async (res) => {
-         const data = await res.json();
-         if (data?.errors) {
-           setErrors(data.errors);
-         }
-       })
+    dispatch(reviewsActions.createReview(reviewData, spotId))
+      .then(() => {
+        onReviewSubmitted(); 
+        closeModal();
+      })
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data?.errors) {
+          setErrors(data.errors);
+        }
+      });
   };
-
 
   if (review.length < 10 || stars < 1) disableButton = "disabled";
 
