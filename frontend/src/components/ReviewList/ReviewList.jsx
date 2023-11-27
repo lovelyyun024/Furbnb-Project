@@ -11,7 +11,6 @@ import "./ReviewList.css";
 export default function ReviewList() {
   const dispatch = useDispatch();
   const { spotId } = useParams();
-  const [showMenu, setShowMenu] = useState(false);
 
   const reviewList = useSelector((state) => state.reviews.reviews);
   const spotsData = useSelector((state) => state.spots);
@@ -38,16 +37,6 @@ export default function ReviewList() {
     }
   }, [currentUser, reviewList, spotsData]);
 
-    useEffect(() => {
-      if (currentUser) {
-        const userReviewed = reviewList.some(
-          (review) => review.userId === currentUser.id
-        );
-        const isOwner = spotsData.ownerId === currentUser.id;
-        setShowMenu(userReviewed && !isOwner);
-      }
-    }, [currentUser, reviewList, spotsData]);
-
   if (!reviewList) return null;
   if (!spotsData) return null;
 
@@ -67,10 +56,13 @@ export default function ReviewList() {
         .reverse()
         .map(({ id, userId, review, User, createdAt }) => (
           <div key={id} className="review">
-            <h3> {(User? User : currentUser ).firstName}</h3>
+            {/* {currentUser.id === userId && setShowMenu(true)} */}
+            <h3> {(User ? User : currentUser).firstName}</h3>
             <h5> {createdAt.slice(0, 10)} </h5>
             <p> {review}</p>
-            {showMenu && <DeleteReviewButton review = {id} spot ={spotId}/>}
+            {currentUser.id === userId  && (
+              <DeleteReviewButton review={id} spot={spotId} />
+            )}
           </div>
         ))}
     </>
