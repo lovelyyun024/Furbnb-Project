@@ -34,7 +34,7 @@ const [url2, setUrl2] = useState("");
 const [url3, setUrl3] = useState("");
 const [url4, setUrl4] = useState("");
 const [url5, setUrl5] = useState("");
-const [preview, setPreview] = useState(true);
+// const [preview, setPreview] = useState(true);
 
 const [errors, setErrors] = useState({});
 
@@ -235,7 +235,7 @@ const [errors, setErrors] = useState({});
               value={url1}
               onChange={(e) => {
                 setUrl1(e.target.value);
-                setPreview("true");
+                // setPreview("true");
               }}
               // required
             />

@@ -9,7 +9,7 @@ export default function DeleteReviewButton({review, spot}) {
   // console.log(reviewId)
   // const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
-  const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
+  // const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
   const ulRef = useRef();
 
   // const toggleMenu = (e) => {
@@ -30,7 +30,7 @@ export default function DeleteReviewButton({review, spot}) {
     document.addEventListener("click", closeMenu);
 
     return () => document.removeEventListener("click", closeMenu);
-  }, [showMenu, isReviewSubmitted]);
+  }, [showMenu]);
 
   const closeMenu = () => setShowMenu(false);
 
