@@ -18,6 +18,7 @@ const loadOneSpot = (spot) => {
   };
 };
 
+
 const addSpot = (spot) => {
   return {
     type: CREATE_SPOT,
@@ -28,6 +29,17 @@ const addSpot = (spot) => {
 // get all spots
 export const getAllSpots = () => async (dispatch) => {
   const response = await fetch("/api/spots");
+
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(loadSpots(data));
+    return data;
+  }
+};
+
+// get all user's spots
+export const getOwnerSpot = () => async (dispatch) => {
+  const response = await fetch("/api/spots/current");
 
   if (response.ok) {
     const data = await response.json();

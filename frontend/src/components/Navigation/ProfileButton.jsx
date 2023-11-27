@@ -59,6 +59,13 @@ function ProfileButton({ user }) {
             </li>
             <li> {user.email}</li>
             <li>
+              <button>
+                <NavLink exact to="/spots/current" style={{ textDecoration: "none" }}>
+                  Manage Spots
+                </NavLink>
+              </button>
+            </li>
+            <li>
               <button onClick={logout}>
                 <NavLink exact to="/" style={{ textDecoration: "none" }}>
                   Log Out

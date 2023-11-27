@@ -6,6 +6,7 @@ import SpotList from './components/SpotList/SpotList'
 import SpotDetails from './components/SpotDetails/SpotDetails'
 import ReviewList from './components/ReviewList/ReviewList'
 import CreateSpot from './components/CreateSpot/CreateSpot';
+import ManageSpot from './components/ManageSpot/ManageSpot';
 import * as sessionActions from './store/session';
 
 function Layout() {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
             <ReviewList />
           </>
         ),
+      },
+      {
+        path: "/spots/current",
+        element: <ManageSpot />,
       },
       {
         path: "/spots/new",
