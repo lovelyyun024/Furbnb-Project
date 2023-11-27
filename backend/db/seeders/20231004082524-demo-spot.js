@@ -20,7 +20,7 @@ module.exports = {
           country: "United States",
           name: "Urban Haven Hideaway",
           description:
-            "Welcome to Urban Oasis Retreat, our stylish 1-bedroom apartment in the heart of Tacoma. This modern space boasts an open-concept design, a fully equipped kitchen, and a private balcony with city views. Enjoy the comfort of a queen-size bed, stay connected with high-speed Wi-Fi and a Smart TV, and take advantage of the convenient workspace. Centrally located, you'll be within walking distance of top attractions, restaurants, and entertainment. Easy access to public transportation makes exploring the city a breeze. Your hosts are dedicated to ensuring a memorable stay—ask us for local tips and recommendations. Book your stay at Urban Oasis Retreat for a perfect blend of convenience and tranquility in the bustling city.",
+            "Welcome to Urban Oasis Retreat, our stylish 1-bedroom apartment in the heart of Tacoma. ",
           lat: 31.7645358,
           lng: 37.4730327,
           price: 80,
@@ -33,7 +33,7 @@ module.exports = {
           country: "United States",
           name: "Coastal Cottage Escape",
           description:
-            "Welcome to our charming coastal cottage, just steps away from the sandy shores of [Beach Name]. This 2-bedroom retreat is perfect for beach lovers seeking a tranquil getaway. Enjoy the ocean breeze from the private patio, unwind in the cozy living room, and explore the nearby seaside attractions. With a fully equipped kitchen and beach essentials provided, your coastal escape awaits.",
+            "Welcome to our charming coastal cottage, just steps away from the sandy shores of Providence. ",
           lat: 35.7645358,
           lng: 35.4730327,
           price: 65,
@@ -46,7 +46,7 @@ module.exports = {
           country: "United States",
           name: "Modern Loft in the Arts District",
           description:
-            "Discover urban living at its finest in our modern loft located in the vibrant Arts District of [City Name]. This industrial-chic space features exposed brick, high ceilings, and curated art pieces. The loft includes a spacious living area, a designer kitchen, and a stylish bedroom. Immerse yourself in the local arts scene, explore trendy galleries, and dine at hip cafes—all just steps away.",
+            "Discover urban living at its finest in our modern loft located in the vibrant Arts District of Littleton. ",
           lat: 32.7645358,
           lng: 32.4730327,
           price: 108,
@@ -59,7 +59,7 @@ module.exports = {
           country: "United States",
           name: "Serene Mountain Retreat",
           description:
-            "Escape to the tranquility of our mountain retreat nestled in the heart of [Mountain Range]. This 3-bedroom cabin offers breathtaking views, a rustic-chic interior, and a cozy fireplace. Hike scenic trails, relax on the spacious deck, and stargaze from the outdoor hot tub. Perfect for nature enthusiasts and those seeking a peaceful mountain getaway.",
+            "Escape to the tranquility of our mountain retreat nestled in the heart of Bangor. ",
           lat: 37.7645358,
           lng: 32.4730327,
           price: 80.9,
@@ -72,7 +72,7 @@ module.exports = {
           country: "United States",
           name: "Historic Townhouse in the City Center",
           description:
-            "Step back in time with a stay in our meticulously restored historic townhouse in the heart of [City Center]. This 4-bedroom gem seamlessly combines classic elegance with modern amenities. Walk to nearby historical sites, dine in charming local eateries, and experience the rich culture of the city—all from the comfort of your beautifully preserved home away from home.",
+            "Step back in time with a stay in our meticulously restored historic townhouse in the heart of Waterville.",
           lat: 77.7645358,
           lng: -82.4730327,
           price: 150,
@@ -85,7 +85,7 @@ module.exports = {
           country: "United States",
           name: "Family-Friendly Suburban Retreat",
           description:
-            "Make memories in our family-friendly 3-bedroom suburban retreat located in a quiet neighborhood in [Suburb Name]. The spacious backyard is perfect for kids to play, and the fully equipped kitchen makes family meals a breeze. Explore nearby parks, visit family-friendly attractions, and relax in the comfort of a home designed for quality family time.",
+            "Make memories in our family-friendly 3-bedroom suburban retreat located in a quiet neighborhood in Hackensack. ",
           lat: 87.7645358,
           lng: -72.4730327,
           price: 150,
@@ -96,9 +96,9 @@ module.exports = {
           city: "Patchogue",
           state: "NY",
           country: "United States",
-          name: "Trendy Studio in the Artsy Neighborhood",
+          name: "Trendy Studio in the Patchogue",
           description:
-            "Immerse yourself in the artsy vibes of [Artsy Neighborhood] with a stay in our trendy studio apartment. This compact yet stylish space is perfect for solo travelers or couples looking to explore the local arts and culture scene. Walk to eclectic boutiques, dine in trendy cafes, and experience the unique energy of this vibrant neighborhood during your stay.",
+            "Immerse yourself in the artsy vibes of Patchogue with a stay in our trendy studio apartment. ",
           lat: -87.7645358,
           lng: 72.4730327,
           price: 200.8,
