@@ -18,6 +18,7 @@ export default function SpotDetails() {
   //   console.log("result", spotsData.Owner);
 
   useEffect(() => {
+    console.log("here!!",spotId)
     dispatch(getOneSpot(spotId));
   }, [dispatch, spotId]);
 

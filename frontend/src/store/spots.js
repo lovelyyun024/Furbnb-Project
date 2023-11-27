@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const GET_ALL_SPOTS = "spots/getAllSpots";
 const GET_ONE_SPOT = "spots/getOneSpot";
 const CREATE_SPOT = "spots/createSpot";
+const UPDATE_SPOT = "spots/editSpot";
 
 const loadSpots = (spots) => {
   return {
@@ -22,6 +23,13 @@ const loadOneSpot = (spot) => {
 const addSpot = (spot) => {
   return {
     type: CREATE_SPOT,
+    spot,
+  };
+};
+
+const updateSpot = (spot) => {
+  return {
+    type: UPDATE_SPOT,
     spot,
   };
 };
@@ -82,6 +90,28 @@ export const createSpot = (spot) => async (dispatch) => {
   return data;
 };
 
+export const editSpot = (spot, spotId) => async (dispatch) => {
+  console.log("here", spotId)
+  const { address, city, state, country, lat, lng, name, description, price } =
+    spot;
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    }),
+  });
+  const data = await response.json();
+  dispatch(updateSpot(data));
+  return data;
+};
 const initialState = {};
 
 const spotsReducer = (state = initialState, action) => {
@@ -97,6 +127,8 @@ const spotsReducer = (state = initialState, action) => {
       return newState;
     }
     case CREATE_SPOT:
+      return { ...state, spots: action.spot };
+    case UPDATE_SPOT:
       return { ...state, spots: action.spot };
     default:
       return state;

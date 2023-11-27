@@ -1,6 +1,7 @@
 import { csrfFetch } from "./csrf";
 const CREATE_SPOT_IMG = "spots/createSpotImg";
 
+
 const addSpotImage = (img) => {
   return {
     type: CREATE_SPOT_IMG,

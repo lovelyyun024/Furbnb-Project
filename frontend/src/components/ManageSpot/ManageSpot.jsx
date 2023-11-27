@@ -23,22 +23,27 @@ export default function ManageSpot() {
         .reverse()
         .map(({ id, city, state, previewImage, avgRating, price }) => (
           <div key={id} className="spot">
-            {/* <NavLink
+            <NavLink
               exact
               to={`/spots/${id}`}
               style={{ textDecoration: "none" }}
-            > */}
-            <img src={previewImage} alt="Airbnb Image" />
-            <div className="star">
-              <p>
-                {city}, {state}
-              </p>
-              <p>{avgRating}</p>
-            </div>
-            <p>${price} night</p>
-            <button type="button">Update</button>
+            >
+              <img src={previewImage} alt="Airbnb Image" />
+              <div className="star">
+                <p>
+                  {city}, {state}
+                </p>
+                <p>{avgRating}</p>
+              </div>
+              <p>${price} night</p>
+            </NavLink>
+            <NavLink
+              exact 
+              style={{ textDecoration: "none" }}
+              to={`/spots/${id}/edit`}>
+              <button type="button">Update</button>
+            </NavLink>
             <button type="button">Delete</button>
-            {/* </NavLink> */}
           </div>
         ))}
     </>
