@@ -1,19 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
-import ReviewFormModal from "../ReviewFormModal/ReviewFormModal.jsx"
-import "./ReviewList.css";
+import DeleteFormModal from "./DeleteReviewModal";
 
-const CreateReviewButton = ({ show, id }) => {
-  const showReviewButton = show;
-  const spotId = id
+export default function DeleteReviewButton({review, spot}) {
+  const reviewId = review
+  const spotId = spot
+  // console.log(reviewId)
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     setShowMenu(!showMenu);
   };
 
@@ -36,24 +36,13 @@ const CreateReviewButton = ({ show, id }) => {
 
   return (
     <>
-      {showReviewButton &&
-        !isReviewSubmitted && (
-          <div className="OpenModalButton">
-            <OpenModalMenuItem
-              itemText="Post Your Review!"
-              onItemClick={closeMenu}
-              modalComponent={
-                <ReviewFormModal
-                  // show={showReviewButton && !isReviewSubmitted} 
-                  id={spotId}
-                  onReviewSubmitted={() => setIsReviewSubmitted(true)}
-                />
-              }
-            />
-          </div>
-        )}
+      <div className="OpenModalButton">
+        <OpenModalMenuItem
+          itemText="Delete"
+          onItemClick={closeMenu}
+          modalComponent={<DeleteFormModal review={reviewId} spot={spotId} />}
+        />
+      </div>
     </>
   );
-};
-
-export default CreateReviewButton;
+}

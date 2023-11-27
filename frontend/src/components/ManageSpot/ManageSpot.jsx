@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getOwnerSpot } from "../../store/spots";
+// import { getOwnerSpot } from "../../store/spots";
+import * as spotActions from "../../store/spots";
+import DeleteSpotButton from "./DeleteSpotButton";
 import { NavLink } from "react-router-dom";
 import "./ManageSpot.css";
 
@@ -9,9 +11,10 @@ export default function ManageSpot() {
 
   const spotsData = useSelector((state) => state.spots);
   const spotList = Object.values(spotsData);
+ 
 
   useEffect(() => {
-    dispatch(getOwnerSpot());
+    dispatch(spotActions.getOwnerSpot());
   }, [dispatch]);
 
   if (!spotList) return null;
@@ -38,12 +41,15 @@ export default function ManageSpot() {
               <p>${price} night</p>
             </NavLink>
             <NavLink
-              exact 
+              exact
               style={{ textDecoration: "none" }}
-              to={`/spots/${id}/edit`}>
+              to={`/spots/${id}/edit`}
+            >
               <button type="button">Update</button>
             </NavLink>
-            <button type="button">Delete</button>
+           
+            <DeleteSpotButton spotId = {id} />
+            <p> </p>
           </div>
         ))}
     </>

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { useParams } from "react-router-dom";
 import * as reviewsActions from "../../store/reviews";
+import * as spotActions from "../../store/spots"
 import "./ReviewFormModal.css";
 
 function ReviewFormModal({ show, id, onReviewSubmitted }) {
@@ -22,6 +23,8 @@ function ReviewFormModal({ show, id, onReviewSubmitted }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    
     const reviewData = {
       review,
       stars,
@@ -29,7 +32,7 @@ function ReviewFormModal({ show, id, onReviewSubmitted }) {
 
     dispatch(reviewsActions.createReview(reviewData, spotId))
       .then(() => {
-        onReviewSubmitted(); 
+        onReviewSubmitted();
         closeModal();
       })
       .catch(async (res) => {
@@ -37,7 +40,8 @@ function ReviewFormModal({ show, id, onReviewSubmitted }) {
         if (data?.errors) {
           setErrors(data.errors);
         }
-      });
+      })
+    dispatch(spotActions.getOneSpot(spotId));
   };
 
   if (review.length < 10 || stars < 1) disableButton = "disabled";

@@ -4,3 +4,47 @@
   justify-content: space-between
 } */
 
+/* SpotList.css */
+
+.spot-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.spot {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  margin-bottom: 20px;
+}
+
+.spot:hover {
+  transform: scale(1.05);
+}
+
+.spot img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.star {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.star p {
+  margin: 0;
+}
+
+.price {
+  background-color: #f7f7f7;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Add more styles as needed */

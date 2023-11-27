@@ -1,9 +1,9 @@
 import { csrfFetch } from "./csrf";
 
 const GET_ALL_SPOTS = "spots/getAllSpots";
-// const GET_ONE_SPOT = "spots/getOneSpot";
 const CREATE_SPOT = "spots/createSpot";
 const UPDATE_SPOT = "spots/editSpot";
+const REMOVE_SPOT = "spots/removeSpot";
 
 const loadSpots = (spots) => {
   return {
@@ -11,14 +11,6 @@ const loadSpots = (spots) => {
     spots,
   };
 };
-
-// const loadOneSpot = (spot) => {
-//   return {
-//     type: GET_ONE_SPOT,
-//     spot,
-//   };
-// };
-
 
 const addSpot = (spot) => {
   return {
@@ -31,6 +23,13 @@ const updateSpot = (spot) => {
   return {
     type: UPDATE_SPOT,
     spot,
+  };
+};
+
+const deleteSpot = (spotId) => {
+  return {
+    type: REMOVE_SPOT,
+    spotId,
   };
 };
 
@@ -92,7 +91,7 @@ export const createSpot = (spot) => async (dispatch) => {
 
 //edit a new spot
 export const editSpot = (spot, spotId) => async (dispatch) => {
-  console.log("here", spotId)
+  console.log("here", spotId);
   const { address, city, state, country, lat, lng, name, description, price } =
     spot;
   const response = await csrfFetch(`/api/spots/${spotId}`, {
@@ -114,28 +113,35 @@ export const editSpot = (spot, spotId) => async (dispatch) => {
   return data;
 };
 
+export const removeSpot = (spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "DELETE",
+  });
+  dispatch(deleteSpot(spotId));
+  return response;
+};
+
 const initialState = {};
 
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_SPOTS: {
       const newState = {};
-      console.log(action.spots)
-      if (Array.isArray(action.spots.Spots)){
+      // console.log(action.spots)
+      if (Array.isArray(action.spots.Spots)) {
         action.spots.Spots.forEach((spot) => (newState[spot.id] = spot));
-      return newState}{
-        return action.spots
+        return newState;
       }
+      return action.spots;
     }
-    // case GET_ONE_SPOT: {
-    //   const newState = {};
-    //   newState.spot = action.spot;
-    //   return newState;
-    // }
     case CREATE_SPOT:
       return { ...state, spots: action.spot };
     case UPDATE_SPOT:
       return { ...state, spots: action.spot };
+    case REMOVE_SPOT:
+      const newState = { ...state };
+      delete newState[action.spotId];
+      return newState;
     default:
       return state;
   }
