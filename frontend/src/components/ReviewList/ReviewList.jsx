@@ -11,37 +11,36 @@ export default function ReviewList() {
   const dispatch = useDispatch();
   const { spotId } = useParams();
 
-  const reviewsData = useSelector((state) => state.reviews);
-  const spotsData = useSelector((state) => state.spots.spot);
+  const reviewList = useSelector((state) => state.reviews.reviews);
+  const spotsData = useSelector((state) => state.spots);
+  // console.log("here", reviewList);
+    // console.log("here", spotsData.ownerId);
 
-  const reviewList = Object.values(reviewsData);
-
+  
   useEffect(() => {
     dispatch(getReviews(spotId));
-  }, [dispatch, spotId]);
-
-  useEffect(() => {
     dispatch(getOneSpot(spotId));
   }, [dispatch, spotId]);
 
   const currentUser = useSelector((state) => state.session.user);
+
   const [showReviewButton, setShowReviewButton] = useState(false);
 
   useEffect(() => {
-    if (spotsData && currentUser && spotsData.ownerId !== currentUser.id) {
-      // console.log("here1")
+    if (currentUser) {
+     
+      const sameUser = (spotsData.ownerId === currentUser.id)
       const userHasReviewed = reviewList.find(
         (review) => review.userId == currentUser.id
       );
-      if (!userHasReviewed) {
-        //  console.log("here2");
-        setShowReviewButton(true);
+      setShowReviewButton(!userHasReviewed && !sameUser);
       }
-    }
+    
   }, [currentUser, reviewList, spotsData]);
 
   if (!reviewList) return null;
   if (!spotsData) return null;
+
 
   const verb = spotsData.numReviews === 1 ? "review":"reviews"
 

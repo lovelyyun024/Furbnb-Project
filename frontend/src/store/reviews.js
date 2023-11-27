@@ -43,19 +43,23 @@ export const createReview = (reviewData, spotId) => async (dispatch) => {
   return data;
 };
 
-const initialState = {};
+const initialState = { reviews: [] };
 
 const reviewsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_REVIEWS: {
-      const newState = {};
-      action.reviews.Reviews.forEach(
-        (review) => (newState[review.id] = review)
-      );
-      return newState;
+      // const newState = {};
+      // action.reviews.Reviews.forEach(
+      //   (review) => (newState[review.id] = review)
+      // );
+      // return newState;
+        // console.log("label", action.reviews);
+      return { ...state, reviews: [...action.reviews.Reviews] };
     }
     case CREATE_REVIEWS:
-      return { ...state, reviews: action.review };
+      // console.log(action.reviews)
+      return { ...state, reviews: [...state.reviews, action.review] };
+      // return { ...state, entries: [...state.entries, action.article] };
     default:
       return state;
   }

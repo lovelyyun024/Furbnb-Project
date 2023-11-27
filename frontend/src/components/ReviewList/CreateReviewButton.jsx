@@ -17,6 +17,7 @@ const CreateReviewButton = ({ show, id }) => {
     setShowMenu(!showMenu);
   };
 
+  // console.log(show)
   useEffect(() => {
     if (!showMenu) return;
 
