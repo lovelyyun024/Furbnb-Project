@@ -2,46 +2,58 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-// import { useModal } from "../../context/Modal";
 import * as spotActions from "../../store/spots";
-import { createSpotImg } from "../../store/spotImages";
 import "./UpdateSpot.css";
 import { useNavigate } from "react-router-dom";
 
 const UpdateSpot = () => {
-  const dispatch = useDispatch();
-  
+    const dispatch = useDispatch();
+    const { spotId } = useParams();
+    const navigate = useNavigate();
+    
   const spotsData = useSelector((state) => state.spots);
-  // const { closeModal } = useModal();
+//   console.log(spotsData)
+const img = spotsData.SpotImages;
 
-  const { spotId } = useParams();
-  const spotList = Object.values(spotsData);
+//   const spotList = Object.values(spotsData);
 //   console.log(spotList)
-//    console.log(spotList[3].id);
-//    console.log(spotList[3].id == spotId)
-  const spot = spotList.find((ele) => ele.id == spotId);
+//   const spot = spotList.find((ele) => ele.id == spotId);
 //   console.log(spot);
 
-  const [address, setAddress] = useState(spot.address);
-  const [city, setCity] = useState(spot.city);
-  const [state, setState] = useState(spot.state);
-  const [country, setCountry] = useState(spot.country);
-  const [lat, setLat] = useState(spot.lat);
-  const [lng, setLng] = useState(spot.lng);
-  const [name, setName] = useState(spot.name);
-  const [description, setDescription] = useState(spot.description);
-  const [price, setPrice] = useState(spot.price);
-  const [url1, setUrl1] = useState(spot.previewImage);
-  const [url2, setUrl2] = useState("");
-  const [url3, setUrl3] = useState("");
-  const [url4, setUrl4] = useState("");
-  const [url5, setUrl5] = useState("");
-  const [preview, setPreview] = useState(false);
+const [address, setAddress] = useState("");
+const [city, setCity] = useState("");
+const [state, setState] = useState("");
+const [country, setCountry] = useState("");
+const [lat, setLat] = useState("");
+const [lng, setLng] = useState("");
+const [name, setName] = useState("");
+const [description, setDescription] = useState("");
+const [price, setPrice] = useState("");
+const [url1, setUrl1] = useState("");
+const [url2, setUrl2] = useState("");
+const [url3, setUrl3] = useState("");
+const [url4, setUrl4] = useState("");
+const [url5, setUrl5] = useState("");
+const [preview, setPreview] = useState(true);
 
-  const [errors, setErrors] = useState({});
+const [errors, setErrors] = useState({});
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(spotActions.getOneSpot(spotId));
+  }, [dispatch, spotId]);
 
+   useEffect(() => {
+     setAddress(spotsData.address);
+     setCity(spotsData.city);
+     setState(spotsData.state)
+     setCountry(spotsData.country)
+     setLat(spotsData.lat)
+     setLng(spotsData.lng)
+     setName(spotsData.name)
+     setDescription(spotsData.description)
+     setPrice(spotsData.price)
+     if(img){setUrl1(img[0].url)};
+   }, [spotsData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,9 +76,14 @@ const UpdateSpot = () => {
             name,
             description,
             price,
-          },spotId
+          },
+          spotId
         )
       )
+        .then(() => {
+          // If the dispatch is successful, navigate to the desired page
+          navigate(`/spots/${spotId}`);
+        })
 
         .catch(async (res) => {
           const data = await res.json();
@@ -76,8 +93,8 @@ const UpdateSpot = () => {
           }
         });
 
-    console.log("label", spotId)
-    navigate(`/spots/${spotId}`)
+    // console.log("label", spotId)
+   
     }
   };
 

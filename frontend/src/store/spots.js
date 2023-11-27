@@ -1,7 +1,7 @@
 import { csrfFetch } from "./csrf";
 
 const GET_ALL_SPOTS = "spots/getAllSpots";
-const GET_ONE_SPOT = "spots/getOneSpot";
+// const GET_ONE_SPOT = "spots/getOneSpot";
 const CREATE_SPOT = "spots/createSpot";
 const UPDATE_SPOT = "spots/editSpot";
 
@@ -12,12 +12,12 @@ const loadSpots = (spots) => {
   };
 };
 
-const loadOneSpot = (spot) => {
-  return {
-    type: GET_ONE_SPOT,
-    spot,
-  };
-};
+// const loadOneSpot = (spot) => {
+//   return {
+//     type: GET_ONE_SPOT,
+//     spot,
+//   };
+// };
 
 
 const addSpot = (spot) => {
@@ -62,7 +62,7 @@ export const getOneSpot = (spotId) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
-    dispatch(loadOneSpot(data));
+    dispatch(loadSpots(data));
     return data;
   }
 };
@@ -90,6 +90,7 @@ export const createSpot = (spot) => async (dispatch) => {
   return data;
 };
 
+//edit a new spot
 export const editSpot = (spot, spotId) => async (dispatch) => {
   console.log("here", spotId)
   const { address, city, state, country, lat, lng, name, description, price } =
@@ -112,20 +113,25 @@ export const editSpot = (spot, spotId) => async (dispatch) => {
   dispatch(updateSpot(data));
   return data;
 };
+
 const initialState = {};
 
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_SPOTS: {
       const newState = {};
-      action.spots.Spots.forEach((spot) => (newState[spot.id] = spot));
-      return newState;
+      console.log(action.spots)
+      if (Array.isArray(action.spots.Spots)){
+        action.spots.Spots.forEach((spot) => (newState[spot.id] = spot));
+      return newState}{
+        return action.spots
+      }
     }
-    case GET_ONE_SPOT: {
-      const newState = {};
-      newState.spot = action.spot;
-      return newState;
-    }
+    // case GET_ONE_SPOT: {
+    //   const newState = {};
+    //   newState.spot = action.spot;
+    //   return newState;
+    // }
     case CREATE_SPOT:
       return { ...state, spots: action.spot };
     case UPDATE_SPOT:
