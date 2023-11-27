@@ -19,7 +19,8 @@ export default function SpotList() {
   if(!spotList) return null
   
   return (
-    <>
+    <> 
+    <section id="main-container">
       {[...spotList].reverse().map(({ id, city, state, previewImage, avgRating, price }) => (
         <div key={id} className="spot">
           <NavLink exact to={`/spots/${id}`} style={{ textDecoration: "none" }}>
@@ -34,6 +35,7 @@ export default function SpotList() {
           </NavLink>
         </div>
       ))}
+    </section>
     </>
   );
 }
