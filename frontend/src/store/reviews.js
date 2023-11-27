@@ -2,7 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const GET_REVIEWS = "reviews/getReviews";
 const CREATE_REVIEWS = "reviews/createReview";
-const REMOVE_REVIEWS = "spots/removeReview";
+// const REMOVE_REVIEWS = "spots/removeReview";
 
 const loadReviews = (reviews) => {
   return {
@@ -18,12 +18,12 @@ const addReview = (review) => {
   };
 };
 
-const deleteReview = (spotId) => {
-  return {
-    type: REMOVE_REVIEWS,
-    spotId,
-  };
-};
+// const deleteReview = (spotId) => {
+//   return {
+//     type: REMOVE_REVIEWS,
+//     spotId,
+//   };
+// };
 
 //get all reviews
 export const getReviews = (spotId) => async (dispatch) => {

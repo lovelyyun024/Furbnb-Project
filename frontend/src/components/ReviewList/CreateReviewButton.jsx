@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import ReviewFormModal from "../ReviewFormModal/ReviewFormModal.jsx"
 import "./ReviewList.css";
@@ -7,15 +7,15 @@ import "./ReviewList.css";
 const CreateReviewButton = ({ show, id }) => {
   const showReviewButton = show;
   const spotId = id
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
   const ulRef = useRef();
 
-  const toggleMenu = (e) => {
-    e.stopPropagation(); 
-    setShowMenu(!showMenu);
-  };
+  // const toggleMenu = (e) => {
+  //   e.stopPropagation(); 
+  //   setShowMenu(!showMenu);
+  // };
 
   // console.log(show)
   useEffect(() => {

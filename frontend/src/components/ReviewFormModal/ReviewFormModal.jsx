@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import * as reviewsActions from "../../store/reviews";
 import * as spotActions from "../../store/spots"
 import "./ReviewFormModal.css";
 
-function ReviewFormModal({ show, id, onReviewSubmitted }) {
+function ReviewFormModal({ id, onReviewSubmitted }) {
   const dispatch = useDispatch();
   const [review, setReview] = useState("");
   const [stars, setStars] = useState(0);

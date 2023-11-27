@@ -52,8 +52,8 @@ const [errors, setErrors] = useState({});
      setName(spotsData.name)
      setDescription(spotsData.description)
      setPrice(spotsData.price)
-     if(img){setUrl1(img[0].url)};
-   }, [spotsData]);
+     if(img){setUrl1(img[0].url)}
+   }, [spotsData, img]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

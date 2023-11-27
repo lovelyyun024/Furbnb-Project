@@ -1,18 +1,18 @@
 import { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import DeleteSpotModal from "../DeleteSpotModal/DeleteSpotModal";
 
 export default function DeleteSpotButton({ spotId }) {
   const id = spotId;
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
-  const toggleMenu = (e) => {
-    e.stopPropagation();
-    setShowMenu(!showMenu);
-  };
+  // const toggleMenu = (e) => {
+  //   e.stopPropagation();
+  //   setShowMenu(!showMenu);
+  // };
 
   // console.log(show)
   useEffect(() => {

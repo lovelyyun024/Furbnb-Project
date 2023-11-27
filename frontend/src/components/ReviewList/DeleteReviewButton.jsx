@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import DeleteFormModal from "./DeleteReviewModal";
 
@@ -7,15 +7,15 @@ export default function DeleteReviewButton({review, spot}) {
   const reviewId = review
   const spotId = spot
   // console.log(reviewId)
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
   const ulRef = useRef();
 
-  const toggleMenu = (e) => {
-    e.stopPropagation();
-    setShowMenu(!showMenu);
-  };
+  // const toggleMenu = (e) => {
+  //   e.stopPropagation();
+  //   setShowMenu(!showMenu);
+  // };
 
   // console.log(show)
   useEffect(() => {

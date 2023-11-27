@@ -1,7 +1,7 @@
 import * as reviewActions from "../../store/reviews";
 import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 
 export default function DeleteReviewModal({ review, spot }) {
   const reviewId = review;
