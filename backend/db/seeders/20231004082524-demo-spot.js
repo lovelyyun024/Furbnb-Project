@@ -20,7 +20,7 @@ module.exports = {
           country: "United States",
           name: "Urban Haven Hideaway",
           description:
-            "Welcome to Urban Oasis Retreat, our stylish 1-bedroom apartment in the heart of Tacoma. ",
+            "Charming 2BR, 1BA Airbnb in the heart of [City]. Stylish decor, modern amenities, and a cozy atmosphere. Explore nearby attractions and relax in comfort. Book your stay for a memorable experience!",
           lat: 31.7645358,
           lng: 37.4730327,
           price: 80,
@@ -62,7 +62,7 @@ module.exports = {
             "Escape to the tranquility of our mountain retreat nestled in the heart of Bangor. ",
           lat: 37.7645358,
           lng: 32.4730327,
-          price: 80.9,
+          price: 80,
         },
         {
           ownerId: 3,
@@ -101,7 +101,7 @@ module.exports = {
             "Immerse yourself in the artsy vibes of Patchogue with a stay in our trendy studio apartment. ",
           lat: -87.7645358,
           lng: 72.4730327,
-          price: 200.8,
+          price: 200,
         },
       ],
       { validate: true }
@@ -115,12 +115,7 @@ module.exports = {
       options,
       {
         ownerId: {
-          [Op.in]: [
-            "1",
-            "2",
-            "3",
-            "4"
-          ],
+          [Op.in]: ["1", "2", "3", "4"],
         },
       },
       {}

@@ -38,9 +38,9 @@ const CreateReviewButton = ({ show, id }) => {
     <>
       {showReviewButton &&
         !isReviewSubmitted && (
-          <div className="OpenModalButton">
+          <div className="OpenModalButton" id = "submit-review-container">
             <OpenModalMenuItem
-              itemText="Post Your Review!"
+              itemText="Post Your Review"
               onItemClick={closeMenu}
               modalComponent={
                 <ReviewFormModal

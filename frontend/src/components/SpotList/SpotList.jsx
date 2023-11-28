@@ -19,23 +19,31 @@ export default function SpotList() {
   if(!spotList) return null
   
   return (
-    <> 
-    <section id="main-container">
-      {[...spotList].reverse().map(({ id, city, state, previewImage, avgRating, price }) => (
-        <div key={id} className="spot">
-          <NavLink exact to={`/spots/${id}`} style={{ textDecoration: "none" }}>
-            <img src={previewImage} alt="Airbnb Image" />
-            <div className="star">
-              <p >
-                {city}, {state}
-              </p>
-              <p >{avgRating}</p>
+    <>
+      <section id="main-container">
+        {[...spotList]
+          .reverse()
+          .map(({ id, city, state, previewImage, avgRating, price }) => (
+            <div key={id} className="spot">
+              <NavLink
+                exact
+                to={`/spots/${id}`}
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <img src={previewImage} alt="Airbnb Image" />
+                <div className="star">
+                  <p id="address">
+                    {city}, {state}
+                  </p>
+                  <p id="review" style={{fontWeight:"bold"}}>{avgRating}</p>
+                <p>
+                  <span id="bold">${price} </span>night
+                </p>
+                </div>
+              </NavLink>
             </div>
-            <p >${price} night</p>
-          </NavLink>
-        </div>
-      ))}
-    </section>
+          ))}
+      </section>
     </>
   );
 }

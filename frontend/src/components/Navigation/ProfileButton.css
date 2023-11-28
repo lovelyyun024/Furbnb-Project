@@ -16,30 +16,37 @@
     display:flex;
     flex-direction: column;
 }
-button {
- display: flex;
+#profile-container button {
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 18px;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  /* font-family: 'Montserrat', sans-serif; */
-  /* width:50px; */
-  /* font-size: small; */
-  /* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
+
 }
 
-button i {
-  color: #555;
+.button1 {
+  border-radius: 25px;
+  background-color: white ;
+
+}
+
+.button2 {
+  border-radius: 25px;
+  background-color:grey ;
+  border:none
 }
 
 li {
   margin: 8px 0;
-  font-size:smaller;
+  font-size:14px;
   font-family: 'Montserrat', sans-serif;
-  /* font-weight: 900 */
  
 }
+
+/* ul{
+  border: ;
+} */

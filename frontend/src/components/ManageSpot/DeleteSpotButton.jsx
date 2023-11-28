@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import DeleteSpotModal from "../DeleteSpotModal/DeleteSpotModal";
 
+
 export default function DeleteSpotButton({ spotId }) {
   const id = spotId;
   // const dispatch = useDispatch();

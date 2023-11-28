@@ -44,30 +44,33 @@ function ProfileButton({ user }) {
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
-    <>
-      <button onClick={toggleMenu}>
+    <div id="profile-container">
+      <button className="button1" onClick={toggleMenu}>
         <TfiMenu />
+        &nbsp;
         <FaCircleUser />
         {/* <i className="fas fa-user-circle" /> */}
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>
+            <li>Hello, {user.username}</li>
+            {/* <li>
               {user.firstName} {user.lastName}
-            </li>
+            </li> */}
             <li> {user.email}</li>
             <li>
-              <button>
-                <NavLink exact to="/spots/current" style={{ textDecoration: "none" }}>
-                  Manage Spots
-                </NavLink>
-              </button>
+              <NavLink
+                exact
+                to="/spots/current"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                Manage Spots
+              </NavLink>
             </li>
             <li>
-              <button onClick={logout}>
-                <NavLink exact to="/" style={{ textDecoration: "none" }}>
+              <button className="button2"  onClick={logout}>
+                <NavLink exact to="/" style={{ textDecoration: "none", color:"white" }}>
                   Log Out
                 </NavLink>
               </button>
@@ -88,7 +91,7 @@ function ProfileButton({ user }) {
           </>
         )}
       </ul>
-    </>
+    </div>
   );
 }
 
