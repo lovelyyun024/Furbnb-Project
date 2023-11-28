@@ -42,7 +42,7 @@ export default function DeleteSpotModal({ spotId }) {
       <form onSubmit={handleSubmitKeep}>
         <button
           type="submit"
-          style={{ width: "50%", height: "30px", borderRadius: "5px",  cursor:"pointer" }}
+          style={{ width: "50%", height: "30px", borderRadius: "5px",  cursor:"pointer", backgroundColor:"darkgray" }}
         >
           No (Keep Spot)
         </button>

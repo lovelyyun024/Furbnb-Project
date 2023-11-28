@@ -41,12 +41,14 @@ export default function ReviewList() {
   if (!spotsData) return null;
   // if(!currentUser) return null
 
-  const verb = spotsData.numReviews === 1 ? "review" : "reviews";
+  const verb = spotsData.numReviews === 1 ? "Review" : "Reviews";
 
   const reviews =
     spotsData.numReviews == 0 ? "" : ` · ${spotsData.numReviews} ${verb} `;
 
   return (
+
+    
     <>
       <div>
         <h1>
@@ -54,7 +56,7 @@ export default function ReviewList() {
         </h1>
         <CreateReviewButton show={showReviewButton} id={spotId} />
       </div>
-
+      
       {[...reviewList]
         .reverse()
         .map(({ id, userId, review, User, createdAt }) => (

@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   padding: 10px 20px;
-  font-size: 18px;
+  font-size: 14px;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -37,7 +37,7 @@
 .button2 {
   border-radius: 25px;
   background-color:grey ;
-  border:none
+  border:solid black
 }
 
 li {
@@ -47,6 +47,9 @@ li {
  
 }
 
+#profile-container ul{
+    border: solid;
+}
 /* ul{
   border: ;
 } */

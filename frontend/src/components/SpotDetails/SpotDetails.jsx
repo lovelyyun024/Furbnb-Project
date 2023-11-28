@@ -44,7 +44,7 @@ export default function SpotDetails() {
         >
           <div className="des-container">
             <h1>
-              Hosted by {spotsData.Owner.firstName}
+              Hosted by {spotsData.Owner.firstName}&nbsp;
               {spotsData.Owner.lastName}
             </h1>
             <p>{spotsData.description}</p>
@@ -52,19 +52,19 @@ export default function SpotDetails() {
 
           <div className="res-container">
             {/* <div className="res-container1"> */}
-              <p className="price">
-                <span style={{ fontSize: "16pt" }}>${spotsData.price} </span>
-                night
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{" "}
-                {spotsData.avgRating} {reviews}
-              </p>
-              <button
-                type="button"
-                onClick={() => alert("Feature Coming Soon...")}
-                className="reserve"
-              >
-                Reserve
-              </button>
+            <p className="price">
+              <span style={{ fontSize: "16pt" }}>${spotsData.price} </span>
+              night
+              <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{" "}
+              {spotsData.avgRating} {reviews}
+            </p>
+            <button
+              type="button"
+              onClick={() => alert("Feature Coming Soon...")}
+              className="reserve"
+            >
+              Reserve
+            </button>
             {/* </div> */}
           </div>
         </div>

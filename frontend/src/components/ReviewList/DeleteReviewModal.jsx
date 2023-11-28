@@ -23,7 +23,7 @@ export default function DeleteReviewModal({ review, spot }) {
     closeModal();
   };
   return (
-    <>
+    <div style={{ width: "50%" }}>
       <form onSubmit={handleSubmitDelete}>
         <h1> Confirm Delete </h1>
         <p>Are you sure you want to delete this review?</p>
@@ -48,11 +48,12 @@ export default function DeleteReviewModal({ review, spot }) {
             height: "30px",
             borderRadius: "5px",
             cursor: "pointer",
+            backgroundColor:"darkgray"
           }}
         >
           No (Keep Review)
         </button>
       </form>
-    </>
+    </div>
   );
 }
