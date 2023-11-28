@@ -494,7 +494,7 @@ const UpdateSpot = () => {
                 type="submit"
                 style={{ backgroundColor: "red", color: "white" }}
               >
-                Create Spot
+                Update your Spot
               </button>
             </div>
           </div>
