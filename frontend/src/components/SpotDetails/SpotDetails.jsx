@@ -7,7 +7,7 @@ import "./SpotDetails.css";
 export default function SpotDetails() {
   const dispatch = useDispatch();
   const { spotId } = useParams();
-  let value = 0;
+  // let value = 0;
 
   const spotsData = useSelector((state) => state.spots);
   const spotImg = spotsData.SpotImages;
