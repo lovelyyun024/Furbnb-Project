@@ -56,6 +56,13 @@ const validators = {
     handleValidationErrors,
   ],
 
+  validateImageCreate: [
+    check("url")
+      .exists({ checkFalsy: true })
+      .withMessage("Preview image is required"),
+  
+    handleValidationErrors,
+  ],
   validateBookingCreate: [
     check("startDate")
       .exists({ checkFalsy: true })

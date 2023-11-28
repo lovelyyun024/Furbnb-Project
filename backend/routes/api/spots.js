@@ -174,7 +174,7 @@ router.get("/", queryCheck, async (req, res, next) => {
     });
 
     if (num !== 0) {
-      spot.avgRating = `★${avg}`;
+      spot.avgRating = `★ ${avg}`;
     } else {
       spot.avgRating = "New";
     }
@@ -320,6 +320,7 @@ router.post(
   requireAuth,
   validators.checkExist,
   validators.checkOwner,
+  validators.validateImageCreate,
   async (req, res, next) => {
     const { url, preview } = req.body;
 

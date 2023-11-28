@@ -1,9 +1,44 @@
 .OpenModalButton {
-  background-color:lightgray;
-  color: black;
-  border: none;
-  padding: 10px 15px;
+  background-color: gray;
+  color: white;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bolder;
+  text-align: center;
+  box-shadow: 5px 6px 10px #000;
+}
+#spot-detail.OpenModalButton {
+  border-color: black;
+  background-color: gray;
+  width: 50px;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bolder;
+  text-align: center;
+  box-shadow: 5px 6px 10px #000;
+}
+
+#submit-review-container.OpenModalButton {
+  border-color: black;
+  background-color: gray;
+  width: 150px;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bolder;
+  text-align: center;
+  box-shadow: 5px 6px 10px #000;
 }

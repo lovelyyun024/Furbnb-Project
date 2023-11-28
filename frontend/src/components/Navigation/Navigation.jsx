@@ -8,7 +8,7 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
 
   return (
-    <ul style={{ borderBottom: "2px solid #B0B0B0" }}>
+    <ul id="nav-container" style={{ borderBottom: "2px solid #B0B0B0" }}>
       <li>
         <NavLink exact to="/">
           <img
@@ -17,11 +17,10 @@ function Navigation({ isLoaded }) {
           />
         </NavLink>
       </li>
-      <li>
-        <CreateSpotButton user={sessionUser} />
-      </li>
+      <li></li>
       {isLoaded && (
-        <li>
+        <li id="user-menu">
+          <CreateSpotButton  user={sessionUser} />
           <ProfileButton user={sessionUser} />
         </li>
       )}

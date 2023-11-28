@@ -20,15 +20,33 @@ export default function DeleteSpotModal({ spotId }) {
      closeModal();
    };
   return (
-    <>
+    <div >
       <h1> Confirm Delete </h1>
       <p>Are you sure you want to remove this spot from the listings?</p>
+
       <form onSubmit={handleSubmitDelete}>
-        <button type="submit">Yes (Delete Spot)</button>
+        <button
+          type="submit"
+          style={{
+            backgroundColor: "red",
+            width: "50%",
+            height: "30px",
+            borderRadius: "5px",
+            cursor:"pointer"
+          }}
+        >
+          Yes (Delete Spot)
+        </button>
       </form>
+
       <form onSubmit={handleSubmitKeep}>
-        <button type="submit">No (Keep Spot)</button>
+        <button
+          type="submit"
+          style={{ width: "50%", height: "30px", borderRadius: "5px",  cursor:"pointer" }}
+        >
+          No (Keep Spot)
+        </button>
       </form>
-    </>
+    </div>
   );
 }

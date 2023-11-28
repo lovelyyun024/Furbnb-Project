@@ -1,1 +1,33 @@
 /* TODO: Add sitewide styles */
+/* Heading */
+h1 {
+  font-size: 16pt;
+  font-weight: bold;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Subheading */
+h2 {
+  font-size: 12pt;
+  font-weight: bold;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Normal Text */
+p {
+  font-size: 10pt;
+  font-weight: normal; /* or use '400' for normal */
+  font-family: 'Montserrat', sans-serif;
+}
+
+form {
+  font-size: 10pt;
+  font-weight: normal; /* or use '400' for normal */
+  font-family: 'Montserrat', sans-serif;
+}
+
+button{
+   font-size: 10pt;
+  font-weight: normal; /* or use '400' for normal */
+  font-family: 'Montserrat', sans-serif;
+}

@@ -1,0 +1,24 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#review-submit-container button {
+  background-color: red;
+  width: 150px;
+  /* color: gray; */
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bolder;
+  /* box-shadow: 5px 6px 10px #000; */
+}
+
+#review-submit-container button:disabled {
+  background-color: #dddddd; /* Light gray background color for disabled state */
+  color: #aaaaaa; /* Dim text color for disabled state */
+}

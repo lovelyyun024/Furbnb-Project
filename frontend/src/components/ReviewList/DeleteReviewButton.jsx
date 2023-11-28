@@ -36,7 +36,7 @@ export default function DeleteReviewButton({review, spot}) {
 
   return (
     <>
-      <div className="OpenModalButton">
+      <div className="OpenModalButton" id="spot-detail">
         <OpenModalMenuItem
           itemText="Delete"
           onItemClick={closeMenu}
