@@ -37,7 +37,7 @@ export default function SpotList() {
                   </p>
                   <p id="review" style={{fontWeight:"bold"}}>{avgRating}</p>
                 <p>
-                  <span id="bold">${price} </span>night
+                  <span id="bold" style={{fontSize:"18px"}}>${price} </span>night
                 </p>
                 </div>
               </NavLink>

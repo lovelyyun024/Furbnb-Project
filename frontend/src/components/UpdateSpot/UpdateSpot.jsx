@@ -339,8 +339,16 @@ const UpdateSpot = () => {
               {errors.lat && <p className="error">{errors.lat}</p>}
               {errors.lng && <p className="error">{errors.lng}</p>}
             </div>
-
-            {/* <div style={{ borderBottom: "1px solid #000000" }}> */}
+            <p></p>
+            <div>
+              <hr
+                style={{
+                  height: "1px",
+                  border: "none",
+                  borderTop: "1px solid #555555",
+                }}
+              />
+            </div>
             <h2>Describe your place to guests</h2>
             <p>
               Mention the best features of your space, any special amentities
@@ -355,9 +363,16 @@ const UpdateSpot = () => {
             {errors.description && (
               <p className="error">{errors.description}</p>
             )}
-            {/* </div> */}
-
-            {/* <div style={{ borderBottom: "1px solid #000000" }}> */}
+            <p></p>
+            <div>
+              <hr
+                style={{
+                  height: "1px",
+                  border: "none",
+                  borderTop: "1px solid #555555",
+                }}
+              />
+            </div>
             <h2>Create a title for your spot</h2>
             <p>
               Catch guests&apos; attention with a spot title that highlights
@@ -370,9 +385,17 @@ const UpdateSpot = () => {
               // required
             />
             {errors.name && <p className="error">{errors.name}</p>}
-            {/* </div> */}
+            <p></p>
+            <div>
+              <hr
+                style={{
+                  height: "1px",
+                  border: "none",
+                  borderTop: "1px solid #555555",
+                }}
+              />
+            </div>
 
-            {/* <div style={{ borderBottom: "1px solid #000000", width: "100%" }}> */}
             <h2>Set a base price for your spot</h2>
             <p>
               Competitive pricing can help your listing stand out and rank
@@ -390,7 +413,15 @@ const UpdateSpot = () => {
             {errors.price && <p className="error">{errors.price}</p>}
 
             {/* </div> */}
-
+            <div>
+              <hr
+                style={{
+                  height: "1px",
+                  border: "none",
+                  borderTop: "1px solid #555555",
+                }}
+              />
+            </div>
             <div>
               <h3>Liven up your spot with photos</h3>
               <p>Submit a link to at least one photo to publish your spot.</p>
@@ -440,10 +471,17 @@ const UpdateSpot = () => {
                   onChange={(e) => setUrl5(e.target.value)}
                 />
                 {errors.url5 && <p className="error">{errors.url5}</p>}
-                <p></p>
               </div>
             </div>
-
+            <div>
+              <hr
+                style={{
+                  height: "1px",
+                  border: "none",
+                  borderTop: "1px solid #555555",
+                }}
+              />
+            </div>
             <div
               style={{
                 width: "100%",
@@ -452,7 +490,12 @@ const UpdateSpot = () => {
                 alignItems: "center",
               }}
             >
-              <button type="submit">Create Spot</button>
+              <button
+                type="submit"
+                style={{ backgroundColor: "red", color: "white" }}
+              >
+                Create Spot
+              </button>
             </div>
           </div>
         </form>
@@ -460,6 +503,5 @@ const UpdateSpot = () => {
     </>
   );
 };
-
 
 export default UpdateSpot;

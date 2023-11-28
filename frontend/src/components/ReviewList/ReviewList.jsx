@@ -41,7 +41,7 @@ export default function ReviewList() {
   if (!spotsData) return null;
   // if(!currentUser) return null
 
-  const verb = spotsData.numReviews === 1 ? "review" : "reviews";
+  const verb = spotsData.numReviews === 1 ? "Review" : "Reviews";
 
   const reviews =
     spotsData.numReviews == 0 ? "" : ` · ${spotsData.numReviews} ${verb} `;

@@ -16,7 +16,9 @@ const CreateSpot = () => {
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState(
+    ""
+  );
   const [price, setPrice] = useState("");
   const [url1, setUrl1] = useState("");
   const [url2, setUrl2] = useState("");
@@ -121,7 +123,7 @@ const CreateSpot = () => {
               type="text"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              // required
+              placeholder="Country"
             />
             {errors.country && <p className="error">{errors.country}</p>}
 
@@ -130,7 +132,7 @@ const CreateSpot = () => {
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              // required
+              placeholder="Address"
             />
             {errors.address && <p className="error">{errors.address}</p>}
             <div className="city-container">
@@ -140,16 +142,16 @@ const CreateSpot = () => {
                 type="text"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                // required
+                placeholder="City"
               />
 
               <input
                 type="text"
                 value={state}
                 onChange={(e) => setState(e.target.value)}
-                // required
-                />
-                {errors.city && <p className="error">{errors.city}</p>}
+                placeholder="State"
+              />
+              {errors.city && <p className="error">{errors.city}</p>}
               {errors.state && <p className="error">{errors.state}</p>}
             </div>
             <div className="city-container">
@@ -159,18 +161,28 @@ const CreateSpot = () => {
                 type="text"
                 value={lat}
                 onChange={(e) => setLat(e.target.value)}
+                placeholder="Latitude"
               />
 
               <input
                 type="text"
                 value={lng}
                 onChange={(e) => setLng(e.target.value)}
-                />
-                {errors.lat && <p className="error">{errors.lat}</p>}
+                placeholder="Longitude"
+              />
+              {errors.lat && <p className="error">{errors.lat}</p>}
               {errors.lng && <p className="error">{errors.lng}</p>}
             </div>
-
-            {/* <div style={{ borderBottom: "1px solid #000000" }}> */}
+            <p></p>
+            <div>
+              <hr
+                style={{
+                  height: "1px",
+                  border: "none",
+                  borderTop: "1px solid #555555",
+                }}
+              />
+            </div>
             <h2>Describe your place to guests</h2>
             <p>
               Mention the best features of your space, any special amentities
@@ -181,13 +193,21 @@ const CreateSpot = () => {
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              placeholder="Please write at least 30 characters"
             />
             {errors.description && (
               <p className="error">{errors.description}</p>
             )}
-            {/* </div> */}
-
-            {/* <div style={{ borderBottom: "1px solid #000000" }}> */}
+            <p></p>
+            <div>
+              <hr
+                style={{
+                  height: "1px",
+                  border: "none",
+                  borderTop: "1px solid #555555",
+                }}
+              />
+            </div>
             <h2>Create a title for your spot</h2>
             <p>
               Catch guests&apos; attention with a spot title that highlights
@@ -197,12 +217,20 @@ const CreateSpot = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              // required
+              placeholder="Name of your spot"
             />
             {errors.name && <p className="error">{errors.name}</p>}
-            {/* </div> */}
+            <p></p>
+            <div>
+              <hr
+                style={{
+                  height: "1px",
+                  border: "none",
+                  borderTop: "1px solid #555555",
+                }}
+              />
+            </div>
 
-            {/* <div style={{ borderBottom: "1px solid #000000", width: "100%" }}> */}
             <h2>Set a base price for your spot</h2>
             <p>
               Competitive pricing can help your listing stand out and rank
@@ -215,12 +243,21 @@ const CreateSpot = () => {
                 type="text"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+                placeholder="Price per night (USD)"
               />
             </p>
             {errors.price && <p className="error">{errors.price}</p>}
 
             {/* </div> */}
-
+            <div>
+              <hr
+                style={{
+                  height: "1px",
+                  border: "none",
+                  borderTop: "1px solid #555555",
+                }}
+              />
+            </div>
             <div>
               <h3>Liven up your spot with photos</h3>
               <p>Submit a link to at least one photo to publish your spot.</p>
@@ -239,7 +276,7 @@ const CreateSpot = () => {
                     setUrl1(e.target.value);
                     setPreview("true");
                   }}
-                  // required
+                  placeholder="Preview Image URL"
                 />
                 {errors.url1 && <p className="error">{errors.url1}</p>}
                 <p></p>
@@ -247,6 +284,7 @@ const CreateSpot = () => {
                   type="text"
                   value={url2}
                   onChange={(e) => setUrl2(e.target.value)}
+                  placeholder="Image URL"
                 />
                 {errors.url2 && <p className="error">{errors.url2}</p>}
                 <p></p>
@@ -254,6 +292,7 @@ const CreateSpot = () => {
                   type="text"
                   value={url3}
                   onChange={(e) => setUrl3(e.target.value)}
+                  placeholder="Image URL"
                 />
                 {errors.url3 && <p className="error">{errors.url3}</p>}
                 <p></p>
@@ -261,6 +300,7 @@ const CreateSpot = () => {
                   type="text"
                   value={url4}
                   onChange={(e) => setUrl4(e.target.value)}
+                  placeholder="Image URL"
                 />
                 {errors.url4 && <p className="error">{errors.url4}</p>}
                 <p></p>
@@ -268,12 +308,20 @@ const CreateSpot = () => {
                   type="text"
                   value={url5}
                   onChange={(e) => setUrl5(e.target.value)}
+                  placeholder="Image URL"
                 />
                 {errors.url5 && <p className="error">{errors.url5}</p>}
-                <p></p>
               </div>
             </div>
-
+            <div>
+              <hr
+                style={{
+                  height: "1px",
+                  border: "none",
+                  borderTop: "1px solid #555555",
+                }}
+              />
+            </div>
             <div
               style={{
                 width: "100%",
@@ -282,7 +330,12 @@ const CreateSpot = () => {
                 alignItems: "center",
               }}
             >
-              <button type="submit">Create Spot</button>
+              <button
+                type="submit"
+                style={{ backgroundColor: "red", color: "white" }}
+              >
+                Create Spot
+              </button>
             </div>
           </div>
         </form>

@@ -48,7 +48,9 @@ function SignupFormModal() {
      firstName.length == 0 ||
      lastName.length == 0 ||
      confirmPassword.length == 0 ||
-     password.length == 0
+     password.length == 0 ||
+     username.length < 4 ||
+     password.length < 6
    ) {
      disableButton = "disabled";
    }
@@ -64,11 +66,10 @@ function SignupFormModal() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            // style={{width:"100%"}}
           />
         </label>
         {errors.email && <p className="error">{errors.email}</p>}
-  
+
         <label>
           Username
           <input
@@ -123,9 +124,14 @@ function SignupFormModal() {
           <p className="error">{errors.confirmPassword}</p>
         )}
         <p></p>
-        <button type="submit" disabled={disableButton}>
-          Sign Up
-        </button>
+        <div id="signup-button-container" style={{width:"100%"}}>
+          <button
+            type="submit"
+            disabled={disableButton}
+          >
+            Sign Up
+          </button>
+        </div>
       </form>
     </div>
   );

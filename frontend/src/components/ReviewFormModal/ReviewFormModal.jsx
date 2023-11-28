@@ -54,6 +54,7 @@ function ReviewFormModal({ id, onReviewSubmitted }) {
           onChange={(e) => setReview(e.target.value)}
           required
           style={{ height: "80px", width: "300px", margin: "10px" }}
+          placeholder="Leave your review here..."
         />
 
         <div id="star-container" style={{ fontSize: "18px" }}>
