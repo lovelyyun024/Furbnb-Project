@@ -21,10 +21,10 @@ export default function DeleteSpotModal({ spotId }) {
    };
   return (
     <div >
-      <h1> Confirm Delete </h1>
-      <p>Are you sure you want to remove this spot from the listings?</p>
 
       <form onSubmit={handleSubmitDelete}>
+        <h1> Confirm Delete </h1>
+        <p>Are you sure you want to remove this spot from the listings?</p>
         <button
           type="submit"
           style={{

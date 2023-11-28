@@ -2,7 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const GET_REVIEWS = "reviews/getReviews";
 const CREATE_REVIEWS = "reviews/createReview";
-// const REMOVE_REVIEWS = "spots/removeReview";
+const REMOVE_REVIEWS = "spots/removeReview";
 
 const loadReviews = (reviews) => {
   return {
@@ -76,8 +76,8 @@ const reviewsReducer = (state = initialState, action) => {
       // console.log(action.reviews)
       return { ...state, reviews: [...state.reviews, action.review] };
     // return { ...state, entries: [...state.entries, action.article] };
-    // case REMOVE_REVIEWS:
-    //  return { ...state, reviews: [...action.reviews.Reviews] };
+    case REMOVE_REVIEWS:
+     return { ...state, reviews: [...action.reviews.Reviews] };
     default:
       return state;
   }
