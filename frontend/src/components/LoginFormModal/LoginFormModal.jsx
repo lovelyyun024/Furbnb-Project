@@ -2,6 +2,7 @@ import { useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+// import { Link } from "react-router-dom";
 import "./LoginForm.css";
 
 function LoginFormModal() {
@@ -13,9 +14,9 @@ function LoginFormModal() {
   let disableButton = "";
 
   const autoFillCredentials = () => {
-     setCredential("demo@user.io");
-     setPassword("password1");
-   };
+    setCredential("demo@user.io");
+    setPassword("password1");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,11 +34,11 @@ function LoginFormModal() {
   if (credential.length < 4 || password.length < 6) disableButton = "disabled";
 
   return (
-    <>
+    <div style={{ width: "50%" }}>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          Username or Email
+          Username or Email &nbsp;
           <input
             type="text"
             value={credential}
@@ -45,8 +46,9 @@ function LoginFormModal() {
             required
           />
         </label>
+
         <label>
-          Password
+          Password &nbsp;
           <input
             type="password"
             value={password}
@@ -56,13 +58,31 @@ function LoginFormModal() {
         </label>
         {errors.credential && <p>{errors.credential}</p>}
         {errors.password && <p>{errors.password}</p>}
-        <button type="submit" disabled={disableButton}>
+        <p></p>
+        <button
+          type="submit"
+          disabled={disableButton}
+          style={{
+            cursor: "pointer",
+          }}
+        >
           Log In
         </button>
-
-        <button onClick={autoFillCredentials}>Demo User</button>
+        <p></p>
+        <button
+          onClick={autoFillCredentials}
+          style={{
+            border: "none",
+            backgroundColor: "white",
+            textDecoration: "underline",
+            color: "darkgreen",
+            cursor: "pointer",
+          }}
+        >
+          Demo User
+        </button>
       </form>
-    </>
+    </div>
   );
 }
 

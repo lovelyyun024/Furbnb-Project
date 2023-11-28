@@ -13,7 +13,7 @@ const CreateSpotButton = ({user}) => {
           style={{
             textDecoration: "none",
             color:"darkred",
-            fontSize:"14px"
+            fontSize:"16px"
           }}
         >
           Create a New Spot

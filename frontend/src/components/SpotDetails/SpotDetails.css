@@ -1,39 +1,54 @@
-.image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .image-container {
   display: grid;
-  grid-template-rows: 1fr 0.5fr;
+  /* grid-template-rows: 1fr 2fr 0.5fr 0.5fr 0.5fr;  */
   grid-template-columns: repeat(4, 1fr);
   grid-template-areas:
     "Image1 Image1 Image2 Image3"
     "Image1 Image1 Image4 Image5";
   overflow: hidden;
-  grid-gap: 10px;
+grid-gap: 10px;
 }
 
 .Image1 {
   grid-area: Image1;
+  position: relative;
 }
 
-.Image2 {
-  grid-area: Image2;
+.Image1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.Image3 {
-  grid-area: Image3;
+
+.Image1 {
+  height: 510px; 
 }
 
-.Image4 {
-  grid-area: Image4;
-}
 
+.Image2,
+.Image3,
+.Image4,
 .Image5 {
-  grid-area: Image5;
+  position: relative;
 }
+
+.Image2 img,
+.Image3 img,
+.Image4 img,
+.Image5 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.Image2,
+.Image3,
+.Image4,
+.Image5 {
+  height: 250px;
+}
+
 
 #detail-container {
   display: grid;

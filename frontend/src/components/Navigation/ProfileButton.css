@@ -31,12 +31,22 @@
 .button1 {
   border-radius: 25px;
   background-color: white ;
+
+}
+
+.button2 {
+  border-radius: 25px;
+  background-color:grey ;
+  border:none
 }
 
 li {
   margin: 8px 0;
-  font-size:smaller;
+  font-size:14px;
   font-family: 'Montserrat', sans-serif;
-  /* font-weight: 900 */
  
 }
+
+/* ul{
+  border: ;
+} */

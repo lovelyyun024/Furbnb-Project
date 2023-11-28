@@ -54,7 +54,7 @@ function SignupFormModal() {
    }
 
   return (
-    <>
+    <div style={{ width: "50%" }}>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -64,10 +64,11 @@ function SignupFormModal() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            // style={{width:"100%"}}
           />
         </label>
         {errors.email && <p className="error">{errors.email}</p>}
-        <p></p>
+  
         <label>
           Username
           <input
@@ -78,7 +79,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.username && <p className="error">{errors.username}</p>}
-        <p></p>
+
         <label>
           First Name
           <input
@@ -121,11 +122,12 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p className="error">{errors.confirmPassword}</p>
         )}
+        <p></p>
         <button type="submit" disabled={disableButton}>
           Sign Up
         </button>
       </form>
-    </>
+    </div>
   );
 }
 
