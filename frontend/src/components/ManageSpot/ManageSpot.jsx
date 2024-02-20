@@ -10,7 +10,7 @@ export default function ManageSpot() {
   const dispatch = useDispatch();
   const spotsData = useSelector((state) => state.userSpots);
   const list = Object.values(spotsData);
-  const [showMenu, setShowMenu] = useState(false);
+  const [ setShowMenu] = useState(false);
 
   const closeMenu = () => setShowMenu(false);
 
