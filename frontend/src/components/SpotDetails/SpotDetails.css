@@ -6,7 +6,7 @@
     "Image1 Image1 Image2 Image3"
     "Image1 Image1 Image4 Image5";
   overflow: hidden;
-grid-gap: 10px;
+  grid-gap: 10px;
 }
 
 .Image1 {
@@ -16,15 +16,10 @@ grid-gap: 10px;
 
 .Image1 img {
   width: 100%;
-  height: 100%;
+  height: 510px;
   object-fit: cover;
+  border-radius: 10px;
 }
-
-
-.Image1 {
-  height: 510px; 
-}
-
 
 .Image2,
 .Image3,
@@ -40,6 +35,7 @@ grid-gap: 10px;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 10px;
 }
 
 .Image2,
@@ -49,58 +45,66 @@ grid-gap: 10px;
   height: 250px;
 }
 
-
-#detail-container {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-areas:
-    "des-container des-container res-container"
-    /* "des-container des-container" */;
+.detail-container {
+  display: flex;
   overflow: hidden;
-  grid-gap: 10px;
+  margin-top: 30px;
+  justify-content: space-between;
+  gap: 100px;
 }
 
-.des-container {
-  grid-area: des-container;
+.detial-title {
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .res-container {
-  grid-area: res-container;
-  align-items: center;
-  /* border: 1px solid #000; */
+  display: flex;
+  flex-direction: column;
+  border: 3px solid black;
   padding: 10px;
-  display: grid;
- grid-template-columns: 1fr; 
-  grid-template-areas:
-    " . price"
-    " . reserve";
-  text-align: center; 
+  border-radius: 10px;
+  height: 100px;
 }
 
 .reserve {
-  grid-area: reserve;
-  height: 30px;
+  height: 40px;
+  width: 300px;
+  align-self: center;
+  box-shadow: 3px 3px 3px gray;
 }
 
-.price {
-  grid-area: price;
-     border: 2px solid gray;
-      border-radius: 5px;
-     padding:10px
+.res-price {
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  align-self: center;
+}
+.res-review {
+  text-align: center;
+  align-self: center;
 }
 
 .res-container button {
   align-items: center;
   justify-content: center;
-
   text-align: center;
   text-decoration: none;
   cursor: pointer;
   border-radius: 5px;
   background-color: red;
   color: white;
-  font-size: 11px;
-  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
   font-weight: bolder;
+}
+.spot-detail-container {
+  padding: 0 20px 10px 20px;
+}
+
+.detail-divider {
+  margin-left: 20px;
+  margin-right: 20px;
+  border-top: 1px solid #555555;
 }

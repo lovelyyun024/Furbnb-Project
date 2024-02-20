@@ -1,21 +1,16 @@
 ul{
     display:flex;
     justify-content: space-between;
-    padding-top:20px;
-    padding-bottom: 20px;
+    padding-top:10px;
+    padding-bottom: 10px;
     padding-left: 40px;
     padding-right: 40px;
   
-
 }
 
 li{
 list-style-type:none;
 
-}
-
-img{
-    width:100px
 }
 
 #user-menu{

@@ -6,7 +6,7 @@ import * as reviewsActions from "../../store/reviews";
 import * as spotActions from "../../store/spots";
 import "./ReviewFormModal.css";
 
-function ReviewFormModal({ id, onReviewSubmitted }) {
+function ReviewFormModal({ id }) {
   const dispatch = useDispatch();
   const [review, setReview] = useState("");
   const [stars, setStars] = useState(0);
@@ -15,10 +15,13 @@ function ReviewFormModal({ id, onReviewSubmitted }) {
   const starArray = [1, 2, 3, 4, 5];
   const spotId = id;
   let disableButton = "";
+  const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
 
   const handleRatingChange = (star) => {
     setStars(star);
   };
+
+  const onReviewSubmitted = () => setIsReviewSubmitted(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,18 +48,17 @@ function ReviewFormModal({ id, onReviewSubmitted }) {
   if (review.length < 10 || stars < 1) disableButton = "disabled";
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
+    <div className="modal-form">
+      <form onSubmit={handleSubmit} className="modal-form-container">
         <h1> How was your stay?</h1>
-        <input
+        <textarea
           type="text"
           value={review}
           onChange={(e) => setReview(e.target.value)}
           required
-          style={{ height: "80px", width: "300px", margin: "10px" }}
           placeholder="Leave your review here..."
         />
-
+        {errors.review && <p>{errors.review}</p>}
         <div id="star-container" style={{ fontSize: "18px" }}>
           {starArray.map((star) => (
             <span
@@ -71,17 +73,13 @@ function ReviewFormModal({ id, onReviewSubmitted }) {
             </span>
           ))}
           <span> &nbsp;Stars</span>
-          <p></p>
+          {errors.stars && <p>{errors.stars}</p>}
         </div>
-        {errors.review && <p>{errors.review}</p>}
-        {errors.stars && <p>{errors.stars}</p>}
-        <div id="review-submit-container">
-          <button type="submit" disabled={disableButton}>
-            Submit Your Review
-          </button>
-        </div>
+        <button type="submit" className="submit-review-button" disabled={disableButton}>
+          Submit Your Review
+        </button>
       </form>
-    </>
+    </div>
   );
 }
 

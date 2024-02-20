@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getReviews } from "../../store/reviews";
-import { getOneSpot } from "../../store/spots";
-import CreateReviewButton from "./CreateReviewButton";
-import DeleteReviewButton from "./DeleteReviewButton";
+import { thunkFetchSingleSpot } from "../../store/singleSpot";
+import DeleteReviewModal from "./DeleteReviewModal";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import ReviewFormModal from "../ReviewFormModal/ReviewFormModal.jsx";
 import "./ReviewList.css";
 
 export default function ReviewList() {
@@ -13,13 +14,13 @@ export default function ReviewList() {
   const { spotId } = useParams();
 
   const reviewList = useSelector((state) => state.reviews.reviews);
-  const spotsData = useSelector((state) => state.spots);
+  const spotsData = useSelector((state) => state.singleSpot);
   // console.log("here", reviewList);
   // console.log("here", spotsData.ownerId);
 
   useEffect(() => {
     dispatch(getReviews(spotId));
-    dispatch(getOneSpot(spotId));
+    dispatch(thunkFetchSingleSpot(spotId));
   }, [dispatch, spotId]);
 
   const currentUser = useSelector((state) => state.session.user);
@@ -47,29 +48,40 @@ export default function ReviewList() {
     spotsData.numReviews == 0 ? "" : ` · ${spotsData.numReviews} ${verb} `;
 
   return (
-
-    
-    <>
-      <div>
+    <div className="review-container">
+      <div className="submit-review-container">
         <h1>
           {spotsData.avgRating} {reviews}
         </h1>
-        <CreateReviewButton show={showReviewButton} id={spotId} />
+        {showReviewButton && (
+          <OpenModalButton
+            buttonText="Post your review"
+            modalComponent={<ReviewFormModal id={spotId} />}
+          />
+        )}
       </div>
-      
+      {reviewList.length == 0 && showReviewButton && (
+        <div>
+          <p>Be the first to post a review!</p>
+        </div>
+      )}
+
       {[...reviewList]
-        .reverse()
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         .map(({ id, userId, review, User, createdAt }) => (
-          <div key={id} className="review">
+          <div key={id} className="review-list-container">
             {/* {currentUser.id === userId && setShowMenu(true)} */}
             <h2> {(User ? User : currentUser).firstName}</h2>
             <p style={{ color: "gray" }}> {createdAt.slice(0, 10)} </p>
             <p> {review}</p>
             {currentUser?.id === userId && (
-              <DeleteReviewButton review={id} spot={spotId} />
+              <OpenModalButton
+                buttonText="Delete"
+                modalComponent={<DeleteReviewModal review={id} spot={spotId} />}
+              />
             )}
           </div>
         ))}
-    </>
+    </div>
   );
 }

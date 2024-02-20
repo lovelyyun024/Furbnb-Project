@@ -59,7 +59,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
       },
     });
 
-    const avg = Number((total / num).toFixed(2));
+    const avg = (total / num).toFixed(2);
 
     const previewUrl = await SpotImage.findOne({
       where: {
@@ -71,9 +71,11 @@ router.get("/current", requireAuth, async (req, res, next) => {
       spot.avgRating = `★${avg}`;
     } else spot.avgRating = "★ New"
 
-    if (previewUrl === null) {
-      spot.previewImage = "No preview images yet";
-    } else spot.previewImage = previewUrl.url;}
+    // if (previewUrl === null) {
+    //   spot.previewImage = "No preview images yet";
+    // } else 
+    spot.previewImage = previewUrl.url;
+  }
 
   return res.json({ Spots: allspots });
   
@@ -106,7 +108,7 @@ router.get("/:spotId", validators.checkExist, async (req, res, next) => {
     },
   });
 
-  const avg = Number((total / num).toFixed(2));
+  const avg = (total / num).toFixed(2);
 
   spotDetail.numReviews = num;
 
@@ -164,7 +166,7 @@ router.get("/", queryCheck, async (req, res, next) => {
       },
     });
 
-    const avg = Number((total / num).toFixed(2));
+    const avg = (total / num).toFixed(2);
 
     const previewUrl = await SpotImage.findOne({
       where: {
@@ -176,7 +178,7 @@ router.get("/", queryCheck, async (req, res, next) => {
     if (num !== 0) {
       spot.avgRating = `★ ${avg}`;
     } else {
-      spot.avgRating = "New";
+      spot.avgRating = "★ New";
     }
 
     if (previewUrl === null) {
@@ -227,38 +229,18 @@ router.post(
   "/",
   requireAuth,
   validators.validateSpotCreate,
-  async (req, res, next) => {
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
-
-    // console.log(req.user);
-    const owner = req.user.id;
-
-    const newSpot = Spot.build({
-      ownerId: owner,
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    });
-
-    await newSpot.save();
-
-    res.status(201).json(newSpot);
+  async (req, res) => {
+    const body = req.body;
+    body.ownerId = req.user.id;
+    const spot = await Spot.build(body);
+     try {
+       await spot.validate();
+       await spot.save();
+       res.json(spot);
+     } catch (e) {
+       res.statusCode = 400;
+       res.json(e);
+     }
   }
 );
 
@@ -320,7 +302,6 @@ router.post(
   requireAuth,
   validators.checkExist,
   validators.checkOwner,
-  validators.validateImageCreate,
   async (req, res, next) => {
     const { url, preview } = req.body;
 

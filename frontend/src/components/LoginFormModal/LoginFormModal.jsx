@@ -34,9 +34,9 @@ function LoginFormModal() {
   if (credential.length < 4 || password.length < 6) disableButton = "disabled";
 
   return (
-    <div style={{ width: "60%" }}>
+    <div className="modal-form">
       <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="modal-form-container">
         <label>
           Username or Email &nbsp;
           <input
@@ -44,11 +44,10 @@ function LoginFormModal() {
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
-            style={{
-              width: "100%",
-            }}
+            className="login-input"
           />
         </label>
+          {errors.credential && <span className="error">{errors.credential}</span>}
 
         <label>
           Password &nbsp;
@@ -57,25 +56,17 @@ function LoginFormModal() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{
-              width: "100%",
-            }}
+            className="login-input"
           />
         </label>
-        {errors.credential && <p className="error">{errors.credential}</p>}
-        {errors.password && <p className="error">{errors.password}</p>}
-        <p></p>
+        {errors.password && <span className="error">{errors.password}</span>}
         <button
           type="submit"
           disabled={disableButton}
-          style={{
-            cursor: "pointer",
-            width: "100%",
-          }}
+          className="login-button"
         >
           Log In
         </button>
-        <p></p>
         <button
           onClick={autoFillCredentials}
           style={{

@@ -1,11 +1,11 @@
 import { csrfFetch } from "./csrf";
 
 const GET_ALL_SPOTS = "spots/getAllSpots";
-const CREATE_SPOT = "spots/createSpot";
-const UPDATE_SPOT = "spots/editSpot";
-const REMOVE_SPOT = "spots/removeSpot";
+const ADD_SPOT = "spots/addSpot";
+const UPDATE_SPOT = "spots/updateSpot";
+const DELETE_SPOT = "spots/deleteSpot";
 
-const loadSpots = (spots) => {
+const getAllSpots = (spots) => {
   return {
     type: GET_ALL_SPOTS,
     spots,
@@ -14,7 +14,7 @@ const loadSpots = (spots) => {
 
 const addSpot = (spot) => {
   return {
-    type: CREATE_SPOT,
+    type: ADD_SPOT,
     spot,
   };
 };
@@ -28,96 +28,69 @@ const updateSpot = (spot) => {
 
 const deleteSpot = (spotId) => {
   return {
-    type: REMOVE_SPOT,
+    type: DELETE_SPOT,
     spotId,
   };
 };
 
 // get all spots
-export const getAllSpots = () => async (dispatch) => {
+export const thunkFetchSpots = () => async (dispatch) => {
   const response = await fetch("/api/spots");
 
   if (response.ok) {
     const data = await response.json();
-    dispatch(loadSpots(data));
-    return data;
+    dispatch(getAllSpots(data.Spots));
   }
-};
 
-// get all user's spots
-export const getOwnerSpot = () => async (dispatch) => {
-  const response = await fetch("/api/spots/current");
-
-  if (response.ok) {
-    const data = await response.json();
-    dispatch(loadSpots(data));
-    return data;
-  }
-};
-
-// get the details of one spot
-export const getOneSpot = (spotId) => async (dispatch) => {
-  const response = await fetch(`/api/spots/${spotId}`);
-
-  if (response.ok) {
-    const data = await response.json();
-    dispatch(loadSpots(data));
-    return data;
-  }
+  return response;
 };
 
 //create a new spot
-export const createSpot = (spot) => async (dispatch) => {
-  const { address, city, state, country, lat, lng, name, description, price } =
-    spot;
-  const response = await csrfFetch("/api/spots", {
-    method: "POST",
-    body: JSON.stringify({
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    }),
-  });
+export const thunkCreateSpot = (spot, images) => async (dispatch) => {
+   const response = await csrfFetch(`/api/spots`, {
+     method: "POST",
+     body: JSON.stringify(spot),
+   });
   const data = await response.json();
-  dispatch(addSpot(data));
-  return data;
+  if (response.ok) {
+    for (let i = 0; i < images.length; i++) {
+      const imgObj = { url: images[i], preview: i === 0 };
+      const imageRes = await csrfFetch(`/api/spots/${data.id}/images`, {
+        method: "POST",
+        body: JSON.stringify(imgObj),
+      });
+      if (imageRes.ok && i === 0) {
+        const imageData = await imageRes.json();
+        data.previewImage = imageData.url;
+      }
+    }
+    dispatch(addSpot(data));
+    return data;
+  }
+
 };
 
-//edit a new spot
-export const editSpot = (spot, spotId) => async (dispatch) => {
-  console.log("here", spotId);
-  const { address, city, state, country, lat, lng, name, description, price } =
-    spot;
-  const response = await csrfFetch(`/api/spots/${spotId}`, {
+//edit spot
+export const thunkUpdateSpot = (spot, spotId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
-    body: JSON.stringify({
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    }),
+    body: JSON.stringify(spot),
   });
-  const data = await response.json();
-  dispatch(updateSpot(data));
+  const data = await res.json();
+  if (res.ok) {
+    dispatch(updateSpot(data));
+  }
   return data;
 };
 
-export const removeSpot = (spotId) => async (dispatch) => {
+//delete spot
+export const thunkDeleteSpot = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}`, {
     method: "DELETE",
   });
-  dispatch(deleteSpot(spotId));
+  if (response.ok) {
+    dispatch(deleteSpot(spotId));
+  }
   return response;
 };
 
@@ -126,22 +99,32 @@ const initialState = {};
 const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_SPOTS: {
-      const newState = {};
-      // console.log(action.spots)
-      if (Array.isArray(action.spots.Spots)) {
-        action.spots.Spots.forEach((spot) => (newState[spot.id] = spot));
-        return newState;
+      const newState = { ...state };
+      for (let spot of action.spots) {
+        newState[spot.id] = spot;
       }
-      return action.spots;
+      return newState;
     }
-    case CREATE_SPOT:
-      return { ...state, spots: action.spot };
-    case UPDATE_SPOT:
-      return { ...state, spots: action.spot };
-    // case REMOVE_SPOT:
-    //   const newState = { ...state }
-    //   delete newState[action.spotId]
-    //   return newState;
+    case ADD_SPOT: {
+      const newState = { ...state };
+      newState[action.spot.id] = action.spot;
+      newState[action.spot.id].avgRating = "Not available";
+      return newState;
+    }
+    case UPDATE_SPOT:{
+      const newState = { ...state };
+      newState[action.spot.id] = action.spot;
+      if (state[action.spot.id]) {
+        newState[action.spot.id].avgRating = state[action.spot.id].avgRating;
+        newState[action.spot.id].previewImage = state[action.spot.id].previewImage;
+      }
+      return newState;
+      }
+    case DELETE_SPOT: {
+      const newState = { ...state };
+      delete newState[action.spotId];
+      return newState;
+    }
     default:
       return state;
   }

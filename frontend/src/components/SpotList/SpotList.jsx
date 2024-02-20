@@ -1,44 +1,43 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllSpots } from "../../store/spots";
+import { thunkFetchSpots } from "../../store/spots";
 import { NavLink } from "react-router-dom";
-import './SpotList.css'
-
+import "./SpotList.css";
 
 export default function SpotList() {
   const dispatch = useDispatch();
 
-  const spotsData = useSelector((state) => state.spots);
-  const spotList = Object.values(spotsData);
-
-
   useEffect(() => {
-    dispatch(getAllSpots());
+    dispatch(thunkFetchSpots());
   }, [dispatch]);
 
-  if(!spotList) return null
-  
+  const spotsData = useSelector((state) => state.spots);
+  const list = Object.values(spotsData)
+
   return (
     <>
-      <section id="main-container">
-        {[...spotList]
+      <section className="main-container">
+        {[...list]
           .reverse()
           .map(({ id, city, state, previewImage, avgRating, price }) => (
-            <div key={id} className="spot">
+            <div key={id} className="info-container">
               <NavLink
                 exact
                 to={`/spots/${id}`}
-                style={{ textDecoration: "none", color: "black" }}
+                style={{ textDecoration: "none", color: "#222222" }}
               >
                 <img src={previewImage} alt="Airbnb Image" />
-                <div className="star">
-                  <p id="address">
+                <div className="info-line1">
+                  <div className="info-address">
                     {city}, {state}
-                  </p>
-                  <p id="review" style={{fontWeight:"bold"}}>{avgRating}</p>
-                <p>
-                  <span id="bold" style={{fontSize:"18px"}}>${price} </span>night
-                </p>
+                  </div>
+                  <div className="info-review">{avgRating}</div>
+                </div>
+                <div className="info-price-container">
+                  <span className="info-price">
+                    ${price}
+                  </span>
+                  night
                 </div>
               </NavLink>
             </div>

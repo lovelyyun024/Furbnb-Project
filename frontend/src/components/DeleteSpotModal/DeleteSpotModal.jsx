@@ -1,51 +1,28 @@
-import * as spotActions from "../../store/spots";
+import { thunkDeleteUserSpot } from "../../store/userSpots";
+import { thunkDeleteSpot } from "../../store/spots";
 import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
 
 export default function DeleteSpotModal({ spotId }) {
   const id = spotId;
-//   console.log("label",id)
+  // const spots = useSelector((state) => state.spots);
   const dispatch = useDispatch();
   const { closeModal } = useModal();
 
   const handleSubmitDelete = (e) => {
     e.preventDefault();
-    dispatch(spotActions.removeSpot(id));
-
+    dispatch(thunkDeleteUserSpot(id));
+    dispatch(thunkDeleteSpot(id));
     closeModal();
   };
 
-   const handleSubmitKeep = (e) => {
-     e.preventDefault();
-     closeModal();
-   };
   return (
-    <div >
-
-      <form onSubmit={handleSubmitDelete}>
+    <div className="modal-form">
+      <form onSubmit={handleSubmitDelete} className="modal-form-container">
         <h1> Confirm Delete </h1>
-        <p>Are you sure you want to remove this spot from the listings?</p>
-        <button
-          type="submit"
-          style={{
-            backgroundColor: "red",
-            width: "50%",
-            height: "30px",
-            borderRadius: "5px",
-            cursor:"pointer"
-          }}
-        >
-          Yes (Delete Spot)
-        </button>
-      </form>
-
-      <form onSubmit={handleSubmitKeep}>
-        <button
-          type="submit"
-          style={{ width: "50%", height: "30px", borderRadius: "5px",  cursor:"pointer", backgroundColor:"darkgray" }}
-        >
-          No (Keep Spot)
-        </button>
+        <div>Are you sure you want to remove this spot from the listings?</div>
+        <button className="form-continue" type="submit">Yes (Delete Spot)</button>
+        <button className="form-reject"onClick={closeModal}>No (Keep Spot)</button>
       </form>
     </div>
   );

@@ -40,6 +40,13 @@ module.exports = {
           username: "FakeUser4",
           hashedPassword: bcrypt.hashSync("password4"),
         },
+        {
+          firstName: "Yuu",
+          lastName: "Katsuta",
+          email: "user5@user.io",
+          username: "FakeUser5",
+          hashedPassword: bcrypt.hashSync("password5"),
+        },
       ],
       { validate: true }
     );
@@ -52,7 +59,7 @@ module.exports = {
       options,
       {
         username: {
-          [Op.in]: ["FakeUser1", "FakeUser2", "FakeUser3", "FakeUser4"],
+          [Op.in]: ["Demo-lition", "FakeUser2", "FakeUser3", "FakeUser4", "FakeUser5"],
         },
       },
       {}

@@ -12,36 +12,82 @@ const { param } = require("../routes/api/spots");
 
 const validators = {
   validateSpotCreate: [
+    // check("address")
+    //   .exists({ checkFalsy: true })
+    //   .withMessage("Street address is required"),
+    // check("city").exists({ checkFalsy: true }).withMessage("City is required"),
+    // check("state")
+    //   .exists({ checkFalsy: true })
+    //   .withMessage("State is required"),
+    // check("country")
+    //   .exists({ checkFalsy: true })
+    //   .withMessage("Country is required"),
+    // check("lat")
+    //   .exists({ checkNull: true })
+    //   .isFloat({ min: -90, max: 90 })
+    //   .withMessage("Latitude is not valid"),
+    // check("lng")
+    //   .exists({ checkNull: true })
+    //   .isFloat({ min: -180, max: 180 })
+    //   .withMessage("Longitude is not valid"),
+    // check("name")
+    //   .exists({ checkFalsy: true })
+    //   .isLength({ max: 49 })
+    //   .withMessage("Name is required and must be less than 50 characters"),
+    // check("description")
+    //   .exists({ checkFalsy: true })
+    //   .isLength({ min: 30 })
+    //   .withMessage("Description needs a minimum of 30 characters"),
+    // check("price")
+    //   .exists({ checkFalsy: true })
+    //   .isFloat({ min: 0 })
+    //   .withMessage("Price per day is required and must be greater than 0"),
+    // handleValidationErrors,
     check("address")
       .exists({ checkFalsy: true })
+      .notEmpty()
       .withMessage("Street address is required"),
-    check("city").exists({ checkFalsy: true }).withMessage("City is required"),
+    check("city")
+      .exists({ checkFalsy: true })
+      .notEmpty()
+      .withMessage("City is required"),
     check("state")
       .exists({ checkFalsy: true })
+      .notEmpty()
       .withMessage("State is required"),
     check("country")
       .exists({ checkFalsy: true })
+      .notEmpty()
       .withMessage("Country is required"),
     check("lat")
-      .exists({ checkNull: true })
+      .exists({ checkFalsy: false })
       .isFloat({ min: -90, max: 90 })
       .withMessage("Latitude is not valid"),
     check("lng")
-      .exists({ checkNull: true })
+      .exists({ checkFalsy: false })
       .isFloat({ min: -180, max: 180 })
       .withMessage("Longitude is not valid"),
     check("name")
       .exists({ checkFalsy: true })
-      .isLength({ max: 49 })
-      .withMessage("Name is required and must be less than 50 characters"),
+      .notEmpty()
+      .withMessage("Name is required"),
+    check("name")
+      .isLength({ max: 50 })
+      .withMessage("Name must be less than 50 characters"),
     check("description")
       .exists({ checkFalsy: true })
+      .notEmpty()
+      .withMessage("Description is required"),
+    check("description")
       .isLength({ min: 30 })
-      .withMessage("Description needs a minimum of 30 characters"),
+      .withMessage("Description needs to be a minimum of 30 characters"),
     check("price")
       .exists({ checkFalsy: true })
+      .notEmpty()
+      .withMessage("Price per day is required"),
+    check("price")
       .isFloat({ min: 0 })
-      .withMessage("Price per day is required and must be greater than 0"),
+      .withMessage("Price must be greater than or equal to 0"),
     handleValidationErrors,
   ],
 
@@ -56,13 +102,6 @@ const validators = {
     handleValidationErrors,
   ],
 
-  validateImageCreate: [
-    check("url")
-      .exists({ checkFalsy: true })
-      .withMessage("Preview image is required"),
-  
-    handleValidationErrors,
-  ],
   validateBookingCreate: [
     check("startDate")
       .exists({ checkFalsy: true })
