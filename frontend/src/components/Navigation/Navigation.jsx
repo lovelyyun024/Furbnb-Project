@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
+import CreateSpotButton from "./CreateSpotButton";
 import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
@@ -19,6 +20,7 @@ function Navigation({ isLoaded }) {
       </li>
       {isLoaded && (
         <li id="user-menu">
+          <CreateSpotButton user={sessionUser} />
           <ProfileButton user={sessionUser} />
         </li>
       )}
