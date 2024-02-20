@@ -7,11 +7,11 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
 
   return (
-    <ul id="nav-container" style={{  }}>
+    <ul id="nav-container" style={{}}>
       <li>
         <NavLink exact to="/">
           <img
-            src="../../../public/furbnblogo.png"
+            src="https://barkbook-bucket.s3.us-west-2.amazonaws.com/furbnb/furbnblogo.png"
             alt="Logo"
             style={{ width: "80px" }}
           />
