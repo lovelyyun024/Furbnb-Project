@@ -1,4 +1,4 @@
-import { csrfFetch } from "./csrf";
+// import { csrfFetch } from "./csrf";
 
 const GET_USER_SPOTS = "userSpots/getUserSpots";
 const RESET_USER_SPOTS = "userSpots/resetUserSpots";
@@ -17,7 +17,7 @@ export const resetUserSpots = () => {
   };
 };
 
-const deleteUserSpots = (spotId) => {
+export const deleteUserSpots = (spotId) => {
   return {
     type: DELETE_USER_SPOTS,
     spotId
@@ -37,15 +37,15 @@ export const thunkFetchUserSpots = () => async (dispatch) => {
 };
 
 // delete a user's spot
-export const thunkDeleteUserSpot = (spotId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/spots/${spotId}`, {
-    method: "DELETE",
-  });
-  if (response.ok) {
-    dispatch(deleteUserSpots(spotId));
-  }
-  return response;
-};
+// export const thunkDeleteUserSpot = (spotId) => async (dispatch) => {
+//   const response = await csrfFetch(`/api/spots/${spotId}`, {
+//     method: "DELETE",
+//   });
+//   if (response.ok) {
+//     dispatch(deleteUserSpots(spotId));
+//   }
+//   return response;
+// };
 
 const initialState = {};
 

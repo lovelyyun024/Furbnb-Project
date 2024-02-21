@@ -1,4 +1,4 @@
-import { thunkDeleteUserSpot } from "../../store/userSpots";
+import { deleteUserSpots } from "../../store/userSpots";
 import { thunkDeleteSpot } from "../../store/spots";
 import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
@@ -9,11 +9,16 @@ export default function DeleteSpotModal({ spotId }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
 
-  const handleSubmitDelete = (e) => {
+  const handleSubmitDelete = async(e) => {
     e.preventDefault();
-    dispatch(thunkDeleteUserSpot(id));
-    dispatch(thunkDeleteSpot(id));
-    closeModal();
+    const res = await dispatch(thunkDeleteSpot(id));
+    const data = await res.json();
+       if (res.ok) {
+         await dispatch(deleteUserSpots(id));
+         closeModal();
+       } else {
+         console.log(data);
+       }
   };
 
   return (
