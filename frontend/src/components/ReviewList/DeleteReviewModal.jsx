@@ -1,6 +1,7 @@
 import * as reviewActions from "../../store/reviews";
 import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
+import { thunkFetchSingleSpot } from "../../store/singleSpot";
 
 export default function DeleteReviewModal({ review, spot }) {
   const reviewId = review;
@@ -11,8 +12,13 @@ export default function DeleteReviewModal({ review, spot }) {
 
   const handleSubmitDelete = (e) => {
     e.preventDefault();
-    dispatch(reviewActions.removeReview(reviewId, spotId));
-    closeModal();
+    dispatch(reviewActions.thunkDeleteReview(reviewId)).then(() => {
+      dispatch(thunkFetchSingleSpot(spotId));
+      closeModal()
+    }).catch((error) => {
+      console.error("Error deleting review:", error);
+    });
+
   };
 
   return (

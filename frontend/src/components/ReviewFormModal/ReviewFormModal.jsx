@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 // import { useParams } from "react-router-dom";
 import * as reviewsActions from "../../store/reviews";
-import * as spotActions from "../../store/spots";
+import { thunkFetchSingleSpot } from "../../store/singleSpot";
 import "./ReviewFormModal.css";
 
 function ReviewFormModal({ id }) {
@@ -15,34 +15,34 @@ function ReviewFormModal({ id }) {
   const starArray = [1, 2, 3, 4, 5];
   const spotId = id;
   let disableButton = "";
-  const [setIsReviewSubmitted] = useState(false);
+  const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
 
   const handleRatingChange = (star) => {
     setStars(star);
   };
 
-  const onReviewSubmitted = () => setIsReviewSubmitted(true);
+  // const onReviewSubmitted = () => {setIsReviewSubmitted(true);}
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const reviewData = {
       review,
       stars,
     };
 
-    dispatch(reviewsActions.createReview(reviewData, spotId))
+    dispatch(reviewsActions.thunkcreateReview(reviewData, spotId))
       .then(() => {
-        onReviewSubmitted();
+        setIsReviewSubmitted(true);
         closeModal();
+        dispatch(thunkFetchSingleSpot(spotId));
       })
       .catch(async (res) => {
+        console.log("label", res);
         const data = await res.json();
         if (data?.errors) {
           setErrors(data.errors);
         }
       });
-    dispatch(spotActions.getOneSpot(spotId));
   };
 
   if (review.length < 10 || stars < 1) disableButton = "disabled";
@@ -75,7 +75,11 @@ function ReviewFormModal({ id }) {
           <span> &nbsp;Stars</span>
           {errors.stars && <p>{errors.stars}</p>}
         </div>
-        <button type="submit" className="submit-review-button" disabled={disableButton}>
+        <button
+          type="submit"
+          className="submit-review-button"
+          disabled={disableButton}
+        >
           Submit Your Review
         </button>
       </form>
