@@ -15,7 +15,7 @@ function ReviewFormModal({ id }) {
   const starArray = [1, 2, 3, 4, 5];
   const spotId = id;
   let disableButton = "";
-  const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
+  // const [isReviewSubmited, setIsReviewSubmitted] = useState(false);
 
   const handleRatingChange = (star) => {
     setStars(star);
@@ -32,7 +32,7 @@ function ReviewFormModal({ id }) {
 
     dispatch(reviewsActions.thunkcreateReview(reviewData, spotId))
       .then(() => {
-        setIsReviewSubmitted(true);
+        // setIsReviewSubmitted(true);
         closeModal();
         dispatch(thunkFetchSingleSpot(spotId));
       })
